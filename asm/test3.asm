@@ -1,0 +1,9 @@
+        lda #$01
+        ldx #$10
+        ldy #$22
+        sta $a0
+        stx $a1
+        sty $a2
+        lda $a2
+        ldx $a0
+        ldy $a1

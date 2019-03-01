@@ -31,6 +31,10 @@ func (p *Processor) ImmediateOperand() byte {
 	return p.memory[p.pc+1]
 }
 
+func (p *Processor) ZeroPageOperand() byte {
+	return p.memory[p.ImmediateOperand()]
+}
+
 func (p *Processor) Emulate() error {
 	opcode := p.memory[p.pc]
 	length := 1
@@ -51,9 +55,22 @@ func (p *Processor) Emulate() error {
 	case 0xa2: // LDX immediate
 		p.x = p.ImmediateOperand()
 		length = 2
+	case 0xa4: // LDY zero page
+		p.y = p.ZeroPageOperand()
+		length = 2
+	case 0xa5: // LDA zero page
+		p.a = p.ZeroPageOperand()
+		length = 2
+	case 0xa6: // LDX zero page
+		p.x = p.ZeroPageOperand()
+		length = 2
+	case 0xa8: // TAY
+		p.y = p.a
 	case 0xa9: // LDA immediate
 		p.a = p.ImmediateOperand()
 		length = 2
+	case 0xaa: // TAX
+		p.x = p.a
 	default:
 		return errors.New("unimplemented opcode")
 	}

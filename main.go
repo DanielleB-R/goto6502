@@ -17,7 +17,22 @@ var test2 = Program{
 	FinalMemory:     []MemoryMatch{MemoryMatch{0xa0, []byte{0x01, 0x10, 0x22}}},
 }
 
+var test3 = Program{
+	MachineCodeFile: "asm/test3",
+	Description:     "LD? Zero Page",
+	FinalState:      Registers{0x22, 0x01, 0x10},
+	FinalMemory:     []MemoryMatch{MemoryMatch{0xa0, []byte{0x01, 0x10, 0x22}}},
+}
+
+var test4 = Program{
+	MachineCodeFile: "asm/test4",
+	Description:     "TAX/TAY",
+	FinalState:      Registers{0x01, 0x01, 0x01},
+}
+
 func main() {
 	fmt.Println(test1.Description, ":", test1.Check())
 	fmt.Println(test2.Description, ":", test2.Check())
+	fmt.Println(test3.Description, ":", test3.Check())
+	fmt.Println(test4.Description, ":", test4.Check())
 }

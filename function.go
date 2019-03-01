@@ -15,8 +15,18 @@ type MemoryMatch struct {
 	data []byte
 }
 
+func (m *MemoryMatch) Matches(cpu *Processor) bool {
+	for offset, n := range m.data {
+		if cpu.memory[m.base+offset] != n {
+			return false
+		}
+	}
+	return true
+}
+
 type Program struct {
 	MachineCodeFile string
+	Description     string
 	FinalState      Registers
 	FinalMemory     []MemoryMatch
 }
@@ -28,9 +38,14 @@ func (p *Program) Check() bool {
 	for cpu.memory[cpu.pc] != 0 {
 		err := cpu.Emulate()
 		if err != nil {
-			return false
+			panic(err)
 		}
 	}
 
+	for _, mem := range p.FinalMemory {
+		if !mem.Matches(&cpu) {
+			return false
+		}
+	}
 	return p.FinalState.Matches(&cpu)
 }

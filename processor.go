@@ -36,6 +36,15 @@ func (p *Processor) Emulate() error {
 	length := 1
 
 	switch opcode {
+	case 0x84: // STY zero page
+		p.memory[p.ImmediateOperand()] = p.y
+		length = 2
+	case 0x85: // STA zero page
+		p.memory[p.ImmediateOperand()] = p.a
+		length = 2
+	case 0x86: // STX zero page
+		p.memory[p.ImmediateOperand()] = p.x
+		length = 2
 	case 0xa0: // LDY immediate
 		p.y = p.ImmediateOperand()
 		length = 2

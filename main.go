@@ -30,9 +30,16 @@ var test4 = Program{
 	FinalState:      Registers{0x01, 0x01, 0x01},
 }
 
+var test5 = Program{
+	MachineCodeFile: "asm/test5",
+	Description:     "LD? Absolute",
+	FinalState:      Registers{0xa9, 0xa2, 0xa0},
+}
+
 func main() {
 	fmt.Println(test1.Description, ":", test1.Check())
 	fmt.Println(test2.Description, ":", test2.Check())
 	fmt.Println(test3.Description, ":", test3.Check())
 	fmt.Println(test4.Description, ":", test4.Check())
+	fmt.Println(test5.Description, ":", test5.Check())
 }

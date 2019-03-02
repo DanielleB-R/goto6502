@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/binary"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -27,51 +29,55 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	return nil
 }
 
-func (p *Processor) ImmediateOperand() byte {
-	return p.memory[p.pc+1]
+func (p *Processor) AddressOperand() int {
+	return int(binary.LittleEndian.Uint16(p.memory[(p.pc + 1):]))
 }
 
-func (p *Processor) ZeroPageOperand() byte {
-	return p.memory[p.ImmediateOperand()]
+func AbsoluteOperand(p *Processor) byte {
+	return p.memory[p.AddressOperand()]
+}
+
+// LDA loads a byte into the A register
+func LDA(p *Processor, operand byte) {
+	p.a = operand
+}
+
+// LDX loads a byte into the X register
+func LDX(p *Processor, operand byte) {
+	p.x = operand
+}
+
+// LDY loads a byte into the Y register
+func LDY(p *Processor, operand byte) {
+	p.y = operand
 }
 
 func (p *Processor) Emulate() error {
 	opcode := p.memory[p.pc]
 	length := 1
 
+	if ins, ok := Ops6502[opcode]; ok {
+		ins.Execute(p)
+		p.pc += ins.Length
+		return nil
+	}
+
 	switch opcode {
 	case 0x84: // STY zero page
-		p.memory[p.ImmediateOperand()] = p.y
+		p.memory[ImmediateOperand(p)] = p.y
 		length = 2
 	case 0x85: // STA zero page
-		p.memory[p.ImmediateOperand()] = p.a
+		p.memory[ImmediateOperand(p)] = p.a
 		length = 2
 	case 0x86: // STX zero page
-		p.memory[p.ImmediateOperand()] = p.x
-		length = 2
-	case 0xa0: // LDY immediate
-		p.y = p.ImmediateOperand()
-		length = 2
-	case 0xa2: // LDX immediate
-		p.x = p.ImmediateOperand()
-		length = 2
-	case 0xa4: // LDY zero page
-		p.y = p.ZeroPageOperand()
-		length = 2
-	case 0xa5: // LDA zero page
-		p.a = p.ZeroPageOperand()
-		length = 2
-	case 0xa6: // LDX zero page
-		p.x = p.ZeroPageOperand()
+		p.memory[ImmediateOperand(p)] = p.x
 		length = 2
 	case 0xa8: // TAY
 		p.y = p.a
-	case 0xa9: // LDA immediate
-		p.a = p.ImmediateOperand()
-		length = 2
 	case 0xaa: // TAX
 		p.x = p.a
 	default:
+		fmt.Printf("Opcode not recognized 0x%x\n", opcode)
 		return errors.New("unimplemented opcode")
 	}
 

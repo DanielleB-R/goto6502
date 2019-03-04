@@ -36,10 +36,24 @@ var test5 = Program{
 	FinalState:      Registers{0xa9, 0xa2, 0xa0},
 }
 
+var test6 = Program{
+	MachineCodeFile: "asm/test6",
+	Description:     "LD? Absolute Index X",
+	FinalState:      Registers{0xa2, 0x02, 0xa0},
+}
+
+var test7 = Program{
+	MachineCodeFile: "asm/test7",
+	Description:     "LD? Absolute Index Y",
+	FinalState:      Registers{0xa2, 0xa0, 0x02},
+}
+
 func main() {
 	fmt.Println(test1.Description, ":", test1.Check())
 	fmt.Println(test2.Description, ":", test2.Check())
 	fmt.Println(test3.Description, ":", test3.Check())
 	fmt.Println(test4.Description, ":", test4.Check())
 	fmt.Println(test5.Description, ":", test5.Check())
+	fmt.Println(test6.Description, ":", test6.Check())
+	fmt.Println(test7.Description, ":", test7.Check())
 }

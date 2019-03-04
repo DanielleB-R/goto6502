@@ -29,12 +29,20 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	return nil
 }
 
-func (p *Processor) AddressOperand() int {
+func AddressOperand(p *Processor) int {
 	return int(binary.LittleEndian.Uint16(p.memory[(p.pc + 1):]))
 }
 
 func AbsoluteOperand(p *Processor) byte {
-	return p.memory[p.AddressOperand()]
+	return p.memory[AddressOperand(p)]
+}
+
+func AbsoluteXOperand(p *Processor) byte {
+	return p.memory[AddressOperand(p)+int(p.x)]
+}
+
+func AbsoluteYOperand(p *Processor) byte {
+	return p.memory[AddressOperand(p)+int(p.y)]
 }
 
 // LDA loads a byte into the A register
@@ -52,35 +60,27 @@ func LDY(p *Processor, operand byte) {
 	p.y = operand
 }
 
+func STA(p *Processor, address int) {
+	p.memory[address] = p.a
+}
+
+func STX(p *Processor, address int) {
+	p.memory[address] = p.x
+}
+
+func STY(p *Processor, address int) {
+	p.memory[address] = p.y
+}
+
 func (p *Processor) Emulate() error {
 	opcode := p.memory[p.pc]
-	length := 1
 
 	if ins, ok := Ops6502[opcode]; ok {
 		ins.Execute(p)
-		p.pc += ins.Length
+		p.pc += ins.Length()
 		return nil
 	}
 
-	switch opcode {
-	case 0x84: // STY zero page
-		p.memory[ImmediateOperand(p)] = p.y
-		length = 2
-	case 0x85: // STA zero page
-		p.memory[ImmediateOperand(p)] = p.a
-		length = 2
-	case 0x86: // STX zero page
-		p.memory[ImmediateOperand(p)] = p.x
-		length = 2
-	case 0xa8: // TAY
-		p.y = p.a
-	case 0xaa: // TAX
-		p.x = p.a
-	default:
-		fmt.Printf("Opcode not recognized 0x%x\n", opcode)
-		return errors.New("unimplemented opcode")
-	}
-
-	p.pc += length
-	return nil
+	fmt.Printf("Opcode not recognized 0x%x\n", opcode)
+	return errors.New("unimplemented opcode")
 }

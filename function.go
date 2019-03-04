@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Registers struct {
 	A byte
 	X byte
@@ -47,5 +49,9 @@ func (p *Program) Check() bool {
 			return false
 		}
 	}
-	return p.FinalState.Matches(&cpu)
+	ok := p.FinalState.Matches(&cpu)
+	if !ok {
+		fmt.Printf("A %02x X %02x Y %02x\n", cpu.a, cpu.x, cpu.y)
+	}
+	return ok
 }

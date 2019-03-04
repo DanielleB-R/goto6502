@@ -52,6 +52,16 @@ func ZeroPageOperand(p *Processor) byte {
 	return p.memory[ImmediateOperand(p)]
 }
 
+func ZeroPageXOperand(p *Processor) byte {
+	// Because these values are bytes they wrap normally at 0xff
+	return p.memory[ImmediateOperand(p)+p.x]
+}
+
+func ZeroPageYOperand(p *Processor) byte {
+	// Because these values are bytes they wrap normally at 0xff
+	return p.memory[ImmediateOperand(p)+p.y]
+}
+
 func AccumulatorOperand(p *Processor) byte {
 	return p.a
 }
@@ -79,6 +89,8 @@ var Ops6502 = map[byte]Instruction{
 	0xad: &ByteInstruction{0xad, AbsoluteOperand, LDA, 3},
 	0xae: &ByteInstruction{0xae, AbsoluteOperand, LDX, 3},
 
+	0xb4: &ByteInstruction{0xb4, ZeroPageXOperand, LDY, 2},
+	0xb5: &ByteInstruction{0xb5, ZeroPageXOperand, LDA, 2},
 	0xb9: &ByteInstruction{0xb9, AbsoluteYOperand, LDA, 3},
 	0xbc: &ByteInstruction{0xbc, AbsoluteXOperand, LDY, 3},
 	0xbd: &ByteInstruction{0xbd, AbsoluteXOperand, LDA, 3},

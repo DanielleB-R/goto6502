@@ -37,3 +37,10 @@
         ldx $1000,Y
         sta $08                 ; Expect $a0
         stx $09                 ; Expect $a2
+
+;;; Load zero page index X
+        ldx #$10
+        lda $f2,X
+        ldy $f1,X
+        sta $0a                 ; Expect $10
+        sty $0b                 ; Expect $01

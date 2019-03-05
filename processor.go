@@ -29,8 +29,12 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	return nil
 }
 
+func (p *Processor) addressAt(addr int) int {
+	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
+}
+
 func AddressOperand(p *Processor) int {
-	return int(binary.LittleEndian.Uint16(p.memory[(p.pc + 1):]))
+	return p.addressAt(p.pc + 1)
 }
 
 func AbsoluteOperand(p *Processor) byte {
@@ -43,6 +47,10 @@ func AbsoluteXOperand(p *Processor) byte {
 
 func AbsoluteYOperand(p *Processor) byte {
 	return p.memory[AddressOperand(p)+int(p.y)]
+}
+
+func IndexedIndirectOperand(p *Processor) byte {
+	return p.memory[p.addressAt(int(ImmediateOperand(p)+p.x))]
 }
 
 // LDA loads a byte into the A register

@@ -15,11 +15,13 @@ func (r *Registers) Matches(cpu *Processor) bool {
 type MemoryMatch struct {
 	base int
 	data []byte
+	name string
 }
 
 func (m *MemoryMatch) Matches(cpu *Processor) bool {
 	for offset, n := range m.data {
 		if cpu.memory[m.base+offset] != n {
+			fmt.Printf("Failure in %s\n", m.name)
 			return false
 		}
 	}

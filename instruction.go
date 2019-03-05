@@ -91,6 +91,7 @@ var Ops6502 = map[byte]Instruction{
 
 	0xb4: &ByteInstruction{0xb4, ZeroPageXOperand, LDY, 2},
 	0xb5: &ByteInstruction{0xb5, ZeroPageXOperand, LDA, 2},
+	0xb6: &ByteInstruction{0xb6, ZeroPageYOperand, LDX, 2},
 	0xb9: &ByteInstruction{0xb9, AbsoluteYOperand, LDA, 3},
 	0xbc: &ByteInstruction{0xbc, AbsoluteXOperand, LDY, 3},
 	0xbd: &ByteInstruction{0xbd, AbsoluteXOperand, LDA, 3},

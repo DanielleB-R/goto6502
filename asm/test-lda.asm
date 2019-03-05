@@ -44,3 +44,9 @@
         ldy $f1,X
         sta $0a                 ; Expect $10
         sty $0b                 ; Expect $01
+
+;;; Load zero page index Y
+        lda #$44
+        ldy #$11
+        ldx $f0,Y
+        stx $0c                 ; Expect $01

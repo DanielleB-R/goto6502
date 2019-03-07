@@ -37,9 +37,21 @@ var testLD = Program{
 	},
 }
 
+var testST = Program{
+	MachineCodeFile: "asm/test-sta",
+	Description:     "ST? All Addressing Modes",
+	FinalState:      Registers{0x22, 0x10, 0x20},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x2000, []byte{0x22, 0x55, 0xbb}, "Absolute"},
+		MemoryMatch{0x2010, []byte{0x22}, "Absolute, X"},
+		MemoryMatch{0x2020, []byte{0x22}, "Absolute, Y"},
+	},
+}
+
 func main() {
 	fmt.Println(test1.Description, ":", test1.Check())
 	fmt.Println(test2.Description, ":", test2.Check())
 	fmt.Println(test4.Description, ":", test4.Check())
 	fmt.Println(testLD.Description, ":", testLD.Check())
+	fmt.Println(testST.Description, ":", testST.Check())
 }

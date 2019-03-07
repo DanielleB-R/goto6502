@@ -37,12 +37,20 @@ func AddressOperand(p *Processor) int {
 	return p.addressAt(p.pc + 1)
 }
 
+func AbsoluteXAddress(p *Processor) int {
+	return AddressOperand(p) + int(p.x)
+}
+
+func AbsoluteYAddress(p *Processor) int {
+	return AddressOperand(p) + int(p.y)
+}
+
 func AbsoluteOperand(p *Processor) byte {
 	return p.memory[AddressOperand(p)]
 }
 
 func AbsoluteXOperand(p *Processor) byte {
-	return p.memory[AddressOperand(p)+int(p.x)]
+	return p.memory[AbsoluteXAddress(p)]
 }
 
 func AbsoluteYOperand(p *Processor) byte {

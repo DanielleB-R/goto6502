@@ -37,6 +37,18 @@ func (p *Processor) addressAt(addr int) int {
 	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
 }
 
+func INC(p *Processor, addr int) {
+	p.memory[addr]++
+}
+
+func INX(p *Processor, addr int) {
+	p.x++
+}
+
+func INY(p *Processor, addr int) {
+	p.y++
+}
+
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
 	p.a = p.byteAt(addr)

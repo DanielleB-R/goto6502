@@ -48,10 +48,23 @@ var testST = Program{
 	},
 }
 
+var testINC = Program{
+	MachineCodeFile: "asm/test-inc",
+	Description:     "IN? All Addressing Modes",
+	FinalState:      Registers{0x1f, 0x04, 0x8c},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x01, []byte{0xa7, 0xa8}, "INX"},
+		MemoryMatch{0x03, []byte{0x89, 0x8c}, "INY"},
+		MemoryMatch{0x2020, []byte{0xad, 0x26}, "INC Absolute"},
+		MemoryMatch{0x05, []byte{0x21, 0x20}, "INC Zero Page"},
+	},
+}
+
 func main() {
 	fmt.Println(test1.Description, ":", test1.Check())
 	fmt.Println(test2.Description, ":", test2.Check())
 	fmt.Println(test4.Description, ":", test4.Check())
 	fmt.Println(testLD.Description, ":", testLD.Check())
 	fmt.Println(testST.Description, ":", testST.Check())
+	fmt.Println(testINC.Description, ":", testINC.Check())
 }

@@ -15,7 +15,7 @@ func (i *Instruction) Execute(cpu *Processor) {
 	i.Operation(cpu, i.Operand(cpu))
 }
 
-// Operand functions
+// Address functions
 
 func ImmediateAddress(p *Processor) int {
 	return p.pc + 1
@@ -38,8 +38,27 @@ func ZeroPageYAddress(p *Processor) int {
 	return int(ImmediateOperand(p) + p.y)
 }
 
-// 6502 opcode map
+func AddressOperand(p *Processor) int {
+	return p.addressAt(p.pc + 1)
+}
 
+func AbsoluteXAddress(p *Processor) int {
+	return AddressOperand(p) + int(p.x)
+}
+
+func AbsoluteYAddress(p *Processor) int {
+	return AddressOperand(p) + int(p.y)
+}
+
+func IndexedIndirectOperand(p *Processor) byte {
+	return p.memory[p.addressAt(int(ImmediateOperand(p)+p.x))]
+}
+
+func NoAddress(p *Processor) int {
+	return 0
+}
+
+// Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
 	0x84: Instruction{0x84, ZeroPageAddress, STY, 2},
 	0x85: Instruction{0x85, ZeroPageAddress, STA, 2},
@@ -56,9 +75,9 @@ var Ops6502 = map[byte]Instruction{
 	0xa4: Instruction{0xa4, ZeroPageAddress, LDY, 2},
 	0xa5: Instruction{0xa5, ZeroPageAddress, LDA, 2},
 	0xa6: Instruction{0xa6, ZeroPageAddress, LDX, 2},
-	0xa8: Instruction{0xa8, AddressOperand, TAY, 1}, // TAY
+	0xa8: Instruction{0xa8, NoAddress, TAY, 1},
 	0xa9: Instruction{0xa9, ImmediateAddress, LDA, 2},
-	0xaa: Instruction{0xaa, AddressOperand, TAX, 1}, // TAX
+	0xaa: Instruction{0xaa, NoAddress, TAX, 1},
 	0xac: Instruction{0xac, AddressOperand, LDY, 3},
 	0xad: Instruction{0xad, AddressOperand, LDA, 3},
 	0xae: Instruction{0xae, AddressOperand, LDX, 3},

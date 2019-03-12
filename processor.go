@@ -37,22 +37,6 @@ func (p *Processor) addressAt(addr int) int {
 	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
 }
 
-func AddressOperand(p *Processor) int {
-	return p.addressAt(p.pc + 1)
-}
-
-func AbsoluteXAddress(p *Processor) int {
-	return AddressOperand(p) + int(p.x)
-}
-
-func AbsoluteYAddress(p *Processor) int {
-	return AddressOperand(p) + int(p.y)
-}
-
-func IndexedIndirectOperand(p *Processor) byte {
-	return p.memory[p.addressAt(int(ImmediateOperand(p)+p.x))]
-}
-
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
 	p.a = p.byteAt(addr)

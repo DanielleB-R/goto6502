@@ -49,18 +49,6 @@ func AbsoluteYAddress(p *Processor) int {
 	return AddressOperand(p) + int(p.y)
 }
 
-func AbsoluteOperand(p *Processor) byte {
-	return p.memory[AddressOperand(p)]
-}
-
-func AbsoluteXOperand(p *Processor) byte {
-	return p.memory[AbsoluteXAddress(p)]
-}
-
-func AbsoluteYOperand(p *Processor) byte {
-	return p.memory[AbsoluteYAddress(p)]
-}
-
 func IndexedIndirectOperand(p *Processor) byte {
 	return p.memory[p.addressAt(int(ImmediateOperand(p)+p.x))]
 }
@@ -105,7 +93,7 @@ func (p *Processor) Emulate() error {
 
 	if ins, ok := Ops6502[opcode]; ok {
 		ins.Execute(p)
-		p.pc += ins.Length()
+		p.pc += ins.Length
 		return nil
 	}
 

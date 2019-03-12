@@ -29,6 +29,10 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	return nil
 }
 
+func (p *Processor) byteAt(addr int) byte {
+	return p.memory[addr]
+}
+
 func (p *Processor) addressAt(addr int) int {
 	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
 }
@@ -54,7 +58,7 @@ func AbsoluteXOperand(p *Processor) byte {
 }
 
 func AbsoluteYOperand(p *Processor) byte {
-	return p.memory[AddressOperand(p)+int(p.y)]
+	return p.memory[AbsoluteYAddress(p)]
 }
 
 func IndexedIndirectOperand(p *Processor) byte {
@@ -62,18 +66,18 @@ func IndexedIndirectOperand(p *Processor) byte {
 }
 
 // LDA loads a byte into the A register
-func LDA(p *Processor, operand byte) {
-	p.a = operand
+func LDA(p *Processor, addr int) {
+	p.a = p.byteAt(addr)
 }
 
 // LDX loads a byte into the X register
-func LDX(p *Processor, operand byte) {
-	p.x = operand
+func LDX(p *Processor, addr int) {
+	p.x = p.byteAt(addr)
 }
 
 // LDY loads a byte into the Y register
-func LDY(p *Processor, operand byte) {
-	p.y = operand
+func LDY(p *Processor, addr int) {
+	p.y = p.byteAt(addr)
 }
 
 func STA(p *Processor, address int) {
@@ -86,6 +90,14 @@ func STX(p *Processor, address int) {
 
 func STY(p *Processor, address int) {
 	p.memory[address] = p.y
+}
+
+func TAX(p *Processor, addr int) {
+	p.x = p.a
+}
+
+func TAY(p *Processor, addr int) {
+	p.y = p.a
 }
 
 func (p *Processor) Emulate() error {

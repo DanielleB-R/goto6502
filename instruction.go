@@ -42,9 +42,13 @@ type Instruction interface {
 
 // Operand functions
 
+func ImmediateAddress(p *Processor) int {
+	return p.pc + 1
+}
+
 // ImmediateOperand gets the immediate byte operand of the current instruction
 func ImmediateOperand(p *Processor) byte {
-	return p.memory[p.pc+1]
+	return p.byteAt(p.pc + 1)
 }
 
 // ZeroPageOperand gets the zero page byte operand of the current instruction
@@ -70,6 +74,14 @@ func ZeroPageAddress(p *Processor) int {
 	return int(ImmediateOperand(p))
 }
 
+func ZeroPageXAddress(p *Processor) int {
+	return int(ImmediateOperand(p) + p.x)
+}
+
+func ZeroPageYAddress(p *Processor) int {
+	return int(ImmediateOperand(p) + p.y)
+}
+
 // 6502 opcode map
 
 var Ops6502 = map[byte]Instruction{
@@ -83,23 +95,23 @@ var Ops6502 = map[byte]Instruction{
 	0x99: &AddressInstruction{0x99, AbsoluteYAddress, STA, 3},
 	0x9d: &AddressInstruction{0x9d, AbsoluteXAddress, STA, 3},
 
-	0xa0: &ByteInstruction{0xa0, ImmediateOperand, LDY, 2},
-	0xa2: &ByteInstruction{0xa2, ImmediateOperand, LDX, 2},
-	0xa4: &ByteInstruction{0xa4, ZeroPageOperand, LDY, 2},
-	0xa5: &ByteInstruction{0xa5, ZeroPageOperand, LDA, 2},
-	0xa6: &ByteInstruction{0xa6, ZeroPageOperand, LDX, 2},
-	0xa8: &ByteInstruction{0xa8, AccumulatorOperand, LDY, 1}, // TAY
-	0xa9: &ByteInstruction{0xa9, ImmediateOperand, LDA, 2},
-	0xaa: &ByteInstruction{0xaa, AccumulatorOperand, LDX, 1}, // TAX
-	0xac: &ByteInstruction{0xac, AbsoluteOperand, LDY, 3},
-	0xad: &ByteInstruction{0xad, AbsoluteOperand, LDA, 3},
-	0xae: &ByteInstruction{0xae, AbsoluteOperand, LDX, 3},
+	0xa0: &AddressInstruction{0xa0, ImmediateAddress, LDY, 2},
+	0xa2: &AddressInstruction{0xa2, ImmediateAddress, LDX, 2},
+	0xa4: &AddressInstruction{0xa4, ZeroPageAddress, LDY, 2},
+	0xa5: &AddressInstruction{0xa5, ZeroPageAddress, LDA, 2},
+	0xa6: &AddressInstruction{0xa6, ZeroPageAddress, LDX, 2},
+	0xa8: &AddressInstruction{0xa8, AddressOperand, TAY, 1}, // TAY
+	0xa9: &AddressInstruction{0xa9, ImmediateAddress, LDA, 2},
+	0xaa: &AddressInstruction{0xaa, AddressOperand, TAX, 1}, // TAX
+	0xac: &AddressInstruction{0xac, AddressOperand, LDY, 3},
+	0xad: &AddressInstruction{0xad, AddressOperand, LDA, 3},
+	0xae: &AddressInstruction{0xae, AddressOperand, LDX, 3},
 
-	0xb4: &ByteInstruction{0xb4, ZeroPageXOperand, LDY, 2},
-	0xb5: &ByteInstruction{0xb5, ZeroPageXOperand, LDA, 2},
-	0xb6: &ByteInstruction{0xb6, ZeroPageYOperand, LDX, 2},
-	0xb9: &ByteInstruction{0xb9, AbsoluteYOperand, LDA, 3},
-	0xbc: &ByteInstruction{0xbc, AbsoluteXOperand, LDY, 3},
-	0xbd: &ByteInstruction{0xbd, AbsoluteXOperand, LDA, 3},
-	0xbe: &ByteInstruction{0xbe, AbsoluteYOperand, LDX, 3},
+	0xb4: &AddressInstruction{0xb4, ZeroPageXAddress, LDY, 2},
+	0xb5: &AddressInstruction{0xb5, ZeroPageXAddress, LDA, 2},
+	0xb6: &AddressInstruction{0xb6, ZeroPageYAddress, LDX, 2},
+	0xb9: &AddressInstruction{0xb9, AbsoluteYAddress, LDA, 3},
+	0xbc: &AddressInstruction{0xbc, AbsoluteXAddress, LDY, 3},
+	0xbd: &AddressInstruction{0xbd, AbsoluteXAddress, LDA, 3},
+	0xbe: &AddressInstruction{0xbe, AbsoluteYAddress, LDX, 3},
 }

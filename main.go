@@ -40,11 +40,13 @@ var testLD = Program{
 var testST = Program{
 	MachineCodeFile: "asm/test-sta",
 	Description:     "ST? All Addressing Modes",
-	FinalState:      Registers{0x22, 0x10, 0x20},
+	FinalState:      Registers{0x80, 0xef, 0x22},
 	FinalMemory: []MemoryMatch{
 		MemoryMatch{0x2000, []byte{0x22, 0x55, 0xbb}, "Absolute"},
 		MemoryMatch{0x2010, []byte{0x22}, "Absolute, X"},
 		MemoryMatch{0x2020, []byte{0x22}, "Absolute, Y"},
+		MemoryMatch{0x30, []byte{0x80, 0x75}, "Zero Page, X"},
+		MemoryMatch{0x33, []byte{0xef}, "Zero Page, Y"},
 	},
 }
 

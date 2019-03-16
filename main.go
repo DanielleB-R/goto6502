@@ -62,6 +62,18 @@ var testINC = Program{
 	},
 }
 
+var testDEC = Program{
+	MachineCodeFile: "asm/test-dec",
+	Description:     "DE? All Addressing Modes",
+	FinalState:      Registers{0x1f, 0x04, 0x84},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x01, []byte{0xa3, 0xa2}, "DEX"},
+		MemoryMatch{0x03, []byte{0x87, 0x84}, "DEY"},
+		MemoryMatch{0x2020, []byte{0xa9, 0x22}, "DEC Absolute"},
+		MemoryMatch{0x05, []byte{0x1d, 0x1e}, "DEC Zero Page"},
+	},
+}
+
 func main() {
 	fmt.Println(test1.Description, ":", test1.Check())
 	fmt.Println(test2.Description, ":", test2.Check())
@@ -69,4 +81,5 @@ func main() {
 	fmt.Println(testLD.Description, ":", testLD.Check())
 	fmt.Println(testST.Description, ":", testST.Check())
 	fmt.Println(testINC.Description, ":", testINC.Check())
+	fmt.Println(testDEC.Description, ":", testDEC.Check())
 }

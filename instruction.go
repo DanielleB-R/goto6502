@@ -63,6 +63,7 @@ var Ops6502 = map[byte]Instruction{
 	0x84: Instruction{0x84, ZeroPageAddress, STY, 2},
 	0x85: Instruction{0x85, ZeroPageAddress, STA, 2},
 	0x86: Instruction{0x86, ZeroPageAddress, STX, 2},
+	0x88: Instruction{0x88, NoAddress, DEY, 1},
 	0x8c: Instruction{0x8c, AddressOperand, STY, 3},
 	0x8d: Instruction{0x8d, AddressOperand, STA, 3},
 	0x8e: Instruction{0x8e, AddressOperand, STX, 3},
@@ -93,7 +94,13 @@ var Ops6502 = map[byte]Instruction{
 	0xbd: Instruction{0xbd, AbsoluteXAddress, LDA, 3},
 	0xbe: Instruction{0xbe, AbsoluteYAddress, LDX, 3},
 
+	0xc6: Instruction{0xc6, ZeroPageAddress, DEC, 2},
 	0xc8: Instruction{0xc8, NoAddress, INY, 1},
+	0xca: Instruction{0xc8, NoAddress, DEX, 1},
+	0xce: Instruction{0xce, AddressOperand, DEC, 3},
+
+	0xd6: Instruction{0xd6, ZeroPageXAddress, DEC, 2},
+	0xde: Instruction{0xde, AbsoluteXAddress, DEC, 3},
 
 	0xe6: Instruction{0xe6, ZeroPageAddress, INC, 2},
 	0xe8: Instruction{0xe8, NoAddress, INX, 1},

@@ -37,6 +37,18 @@ func (p *Processor) addressAt(addr int) int {
 	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
 }
 
+func DEC(p *Processor, addr int) {
+	p.memory[addr]--
+}
+
+func DEX(p *Processor, addr int) {
+	p.x--
+}
+
+func DEY(p *Processor, addr int) {
+	p.y--
+}
+
 func INC(p *Processor, addr int) {
 	p.memory[addr]++
 }

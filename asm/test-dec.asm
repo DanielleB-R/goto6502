@@ -17,15 +17,16 @@
         sty $04                 ; Expect $84
 
 ;;; DEC Absolute
+        addr = $2020
         lda #$ab
-        sta $2020
-        dec $2020
-        dec $2020               ; Expect $a9
+        sta addr
+        dec addr
+        dec addr               ; Expect $a9
         lda #$24
-        sta $2021
+        sta addr+1
         ldx #$01
-        dec $2020,X
-        dec $2020,X             ; Expect $22
+        dec addr,X
+        dec addr,X             ; Expect $22
 
 ;;; DEC Zero Page
         lda #$1f

@@ -11,6 +11,7 @@ type Processor struct {
 	a      byte
 	x      byte
 	y      byte
+	f      Flags
 	pc     int
 	memory [65536]byte
 }
@@ -39,41 +40,59 @@ func (p *Processor) addressAt(addr int) int {
 
 func DEC(p *Processor, addr int) {
 	p.memory[addr]--
+	p.f.SetZ(p.memory[addr])
+	p.f.SetN(p.memory[addr])
 }
 
 func DEX(p *Processor, addr int) {
 	p.x--
+	p.f.SetZ(p.x)
+	p.f.SetN(p.x)
 }
 
 func DEY(p *Processor, addr int) {
 	p.y--
+	p.f.SetZ(p.y)
+	p.f.SetN(p.y)
 }
 
 func INC(p *Processor, addr int) {
 	p.memory[addr]++
+	p.f.SetZ(p.memory[addr])
+	p.f.SetN(p.memory[addr])
 }
 
 func INX(p *Processor, addr int) {
 	p.x++
+	p.f.SetZ(p.x)
+	p.f.SetN(p.x)
 }
 
 func INY(p *Processor, addr int) {
 	p.y++
+	p.f.SetZ(p.y)
+	p.f.SetN(p.y)
 }
 
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
 	p.a = p.byteAt(addr)
+	p.f.SetZ(p.a)
+	p.f.SetN(p.a)
 }
 
 // LDX loads a byte into the X register
 func LDX(p *Processor, addr int) {
 	p.x = p.byteAt(addr)
+	p.f.SetZ(p.x)
+	p.f.SetN(p.x)
 }
 
 // LDY loads a byte into the Y register
 func LDY(p *Processor, addr int) {
 	p.y = p.byteAt(addr)
+	p.f.SetZ(p.y)
+	p.f.SetN(p.y)
 }
 
 func STA(p *Processor, address int) {
@@ -90,10 +109,14 @@ func STY(p *Processor, address int) {
 
 func TAX(p *Processor, addr int) {
 	p.x = p.a
+	p.f.SetZ(p.x)
+	p.f.SetN(p.x)
 }
 
 func TAY(p *Processor, addr int) {
 	p.y = p.a
+	p.f.SetZ(p.y)
+	p.f.SetN(p.y)
 }
 
 func (p *Processor) Emulate() error {

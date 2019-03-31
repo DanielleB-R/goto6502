@@ -14,6 +14,7 @@ type Processor struct {
 	f      Flags
 	pc     int
 	memory [65536]byte
+	jumped bool
 }
 
 func (p *Processor) LoadMemory(filename string, base int) error {
@@ -74,6 +75,11 @@ func INY(p *Processor, addr int) {
 	p.f.SetN(p.y)
 }
 
+func JMP(p *Processor, addr int) {
+	p.pc = addr
+	p.jumped = true
+}
+
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
 	p.a = p.byteAt(addr)
@@ -124,7 +130,11 @@ func (p *Processor) Emulate() error {
 
 	if ins, ok := Ops6502[opcode]; ok {
 		ins.Execute(p)
-		p.pc += ins.Length
+		if p.jumped {
+			p.jumped = false
+		} else {
+			p.pc += ins.Length
+		}
 		return nil
 	}
 

@@ -21,7 +21,7 @@ type MemoryMatch struct {
 func (m *MemoryMatch) Matches(cpu *Processor) bool {
 	for offset, n := range m.data {
 		if cpu.memory[m.base+offset] != n {
-			fmt.Printf("Failure in %s\n", m.name)
+			fmt.Printf("Failure in %s, %x should be %x\n", m.name, cpu.memory[m.base+offset], n)
 			return false
 		}
 	}

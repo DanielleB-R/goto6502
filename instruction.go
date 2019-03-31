@@ -50,6 +50,10 @@ func AbsoluteYAddress(p *Processor) int {
 	return AddressOperand(p) + int(p.y)
 }
 
+func IndirectAddress(p *Processor) int {
+	return p.addressAt(AddressOperand(p))
+}
+
 func IndexedIndirectOperand(p *Processor) byte {
 	return p.memory[p.addressAt(int(ImmediateOperand(p)+p.x))]
 }
@@ -60,6 +64,10 @@ func NoAddress(p *Processor) int {
 
 // Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
+	0x4c: Instruction{0x4c, AddressOperand, JMP, 3},
+
+	0x6c: Instruction{0x6c, IndirectAddress, JMP, 3},
+
 	0x84: Instruction{0x84, ZeroPageAddress, STY, 2},
 	0x85: Instruction{0x85, ZeroPageAddress, STA, 2},
 	0x86: Instruction{0x86, ZeroPageAddress, STX, 2},

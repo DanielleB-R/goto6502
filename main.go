@@ -74,12 +74,20 @@ var testDEC = Program{
 	},
 }
 
+var testJMP = Program{
+	MachineCodeFile: "asm/test-jmp",
+	Description:     "JMP Absolute and Indirect",
+	FinalState:      Registers{0x22, 0x20, 0x99},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x01, []byte{0x05, 0x20}, "JMP Absolute"},
+		MemoryMatch{0x03, []byte{0x22}, "JMP Indirect"},
+	},
+}
+
+var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP}
+
 func main() {
-	fmt.Println(test1.Description, ":", test1.Check())
-	fmt.Println(test2.Description, ":", test2.Check())
-	fmt.Println(test4.Description, ":", test4.Check())
-	fmt.Println(testLD.Description, ":", testLD.Check())
-	fmt.Println(testST.Description, ":", testST.Check())
-	fmt.Println(testINC.Description, ":", testINC.Check())
-	fmt.Println(testDEC.Description, ":", testDEC.Check())
+	for _, test := range tests {
+		fmt.Println(test.Description, ":", test.Check())
+	}
 }

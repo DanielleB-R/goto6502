@@ -5,26 +5,26 @@ import (
 )
 
 var test1 = Program{
-	MachineCodeFile: "asm/test1",
+	MachineCodeFile: "asm/test1.bin",
 	Description:     "LD? Immediate",
 	FinalState:      Registers{0x01, 0x10, 0x22},
 }
 
 var test2 = Program{
-	MachineCodeFile: "asm/test2",
+	MachineCodeFile: "asm/test2.bin",
 	Description:     "ST? Zero Page",
 	FinalState:      Registers{0x01, 0x10, 0x22},
 	FinalMemory:     []MemoryMatch{MemoryMatch{0xa0, []byte{0x01, 0x10, 0x22}, "ST? Zero Page"}},
 }
 
 var test4 = Program{
-	MachineCodeFile: "asm/test4",
+	MachineCodeFile: "asm/test4.bin",
 	Description:     "TAX/TAY",
 	FinalState:      Registers{0x01, 0x01, 0x01},
 }
 
 var testLD = Program{
-	MachineCodeFile: "asm/test-lda",
+	MachineCodeFile: "asm/test-lda.bin",
 	Description:     "LD? All Addressing Modes",
 	FinalState:      Registers{0x44, 0x01, 0x11},
 	FinalMemory: []MemoryMatch{
@@ -38,7 +38,7 @@ var testLD = Program{
 }
 
 var testST = Program{
-	MachineCodeFile: "asm/test-sta",
+	MachineCodeFile: "asm/test-sta.bin",
 	Description:     "ST? All Addressing Modes",
 	FinalState:      Registers{0x80, 0xef, 0x22},
 	FinalMemory: []MemoryMatch{
@@ -51,7 +51,7 @@ var testST = Program{
 }
 
 var testINC = Program{
-	MachineCodeFile: "asm/test-inc",
+	MachineCodeFile: "asm/test-inc.bin",
 	Description:     "IN? All Addressing Modes",
 	FinalState:      Registers{0x1f, 0x04, 0x8c},
 	FinalMemory: []MemoryMatch{
@@ -63,7 +63,7 @@ var testINC = Program{
 }
 
 var testDEC = Program{
-	MachineCodeFile: "asm/test-dec",
+	MachineCodeFile: "asm/test-dec.bin",
 	Description:     "DE? All Addressing Modes",
 	FinalState:      Registers{0x1f, 0x04, 0x84},
 	FinalMemory: []MemoryMatch{
@@ -75,7 +75,7 @@ var testDEC = Program{
 }
 
 var testJMP = Program{
-	MachineCodeFile: "asm/test-jmp",
+	MachineCodeFile: "asm/test-jmp.bin",
 	Description:     "JMP Absolute and Indirect",
 	FinalState:      Registers{0x22, 0x20, 0x99},
 	FinalMemory: []MemoryMatch{

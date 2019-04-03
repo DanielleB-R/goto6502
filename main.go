@@ -94,7 +94,16 @@ var testBranch = Program{
 	},
 }
 
-var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch}
+var testStrcpy = Program{
+	MachineCodeFile: "asm/strcpy.bin",
+	Description:     "Simple STRCPY",
+	FinalState:      Registers{0x00, 0x12, 0x00},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x3000, []byte("Running a program!"), "Destination"},
+	},
+}
+
+var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch, testStrcpy}
 
 func main() {
 	for _, test := range tests {

@@ -39,6 +39,17 @@ func (p *Processor) addressAt(addr int) int {
 	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
 }
 
+func (p *Processor) branch(addr int) {
+	offset := asSigned(p.byteAt(addr))
+	p.pc += int(offset)
+}
+
+func BEQ(p *Processor, addr int) {
+	if p.f.Z {
+		p.branch(addr)
+	}
+}
+
 func DEC(p *Processor, addr int) {
 	p.memory[addr]--
 	p.f.SetZ(p.memory[addr])

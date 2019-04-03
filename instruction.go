@@ -15,6 +15,13 @@ func (i *Instruction) Execute(cpu *Processor) {
 	i.Operation(cpu, i.Operand(cpu))
 }
 
+func asSigned(n byte) int8 {
+	if n&0x80 == 0 {
+		return int8(n)
+	}
+	return -int8(^n) - 1
+}
+
 // Address functions
 
 func ImmediateAddress(p *Processor) int {
@@ -114,6 +121,7 @@ var Ops6502 = map[byte]Instruction{
 	0xe8: Instruction{0xe8, NoAddress, INX, 1},
 	0xee: Instruction{0xee, AddressOperand, INC, 3},
 
+	0xf0: Instruction{0xf0, ImmediateAddress, BEQ, 2},
 	0xf6: Instruction{0xf6, ZeroPageXAddress, INC, 2},
 	0xfe: Instruction{0xfe, AbsoluteXAddress, INC, 3},
 }

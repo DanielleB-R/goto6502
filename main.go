@@ -84,7 +84,17 @@ var testJMP = Program{
 	},
 }
 
-var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP}
+var testBranch = Program{
+	MachineCodeFile: "asm/test-branch.bin",
+	Description:     "BEQ",
+	FinalState:      Registers{0x00, 0x28, 0xcd},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x00, []byte{0x00}, "No error"},
+		MemoryMatch{0x01, []byte{0x28, 0xcd}, "BEQ"},
+	},
+}
+
+var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch}
 
 func main() {
 	for _, test := range tests {

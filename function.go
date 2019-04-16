@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/DanielleB-R/goto6502/lib/cpu"
+)
 
 type Registers struct {
 	A byte
@@ -8,8 +12,8 @@ type Registers struct {
 	Y byte
 }
 
-func (r *Registers) Matches(cpu *Processor) bool {
-	return (r.A == cpu.a) && (r.X == cpu.x) && (r.Y == cpu.y)
+func (r *Registers) Matches(processor *cpu.Processor) bool {
+	return (r.A == processor.A) && (r.X == processor.X) && (r.Y == processor.Y)
 }
 
 type MemoryMatch struct {
@@ -18,10 +22,10 @@ type MemoryMatch struct {
 	name string
 }
 
-func (m *MemoryMatch) Matches(cpu *Processor) bool {
+func (m *MemoryMatch) Matches(processor *cpu.Processor) bool {
 	for offset, n := range m.data {
-		if cpu.memory[m.base+offset] != n {
-			fmt.Printf("Failure in %s, %x should be %x\n", m.name, cpu.memory[m.base+offset], n)
+		if processor.Memory[m.base+offset] != n {
+			fmt.Printf("Failure in %s, %x should be %x\n", m.name, processor.Memory[m.base+offset], n)
 			return false
 		}
 	}
@@ -36,10 +40,10 @@ type Program struct {
 }
 
 func (p *Program) Check() bool {
-	cpu := Processor{pc: 0x1000}
+	cpu := cpu.Processor{PC: 0x1000}
 	cpu.LoadMemory(p.MachineCodeFile, 0x1000)
 
-	for cpu.memory[cpu.pc] != 0 {
+	for cpu.Memory[cpu.PC] != 0 {
 		err := cpu.Emulate()
 		if err != nil {
 			panic(err)
@@ -53,7 +57,7 @@ func (p *Program) Check() bool {
 	}
 	ok := p.FinalState.Matches(&cpu)
 	if !ok {
-		fmt.Printf("A %02x X %02x Y %02x\n", cpu.a, cpu.x, cpu.y)
+		fmt.Printf("A %02x X %02x Y %02x\n", cpu.A, cpu.X, cpu.Y)
 	}
 	return ok
 }

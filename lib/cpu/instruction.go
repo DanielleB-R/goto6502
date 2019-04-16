@@ -1,4 +1,4 @@
-package main
+package cpu
 
 // Instruction data
 
@@ -25,12 +25,12 @@ func asSigned(n byte) int8 {
 // Address functions
 
 func ImmediateAddress(p *Processor) int {
-	return p.pc + 1
+	return p.PC + 1
 }
 
 // ImmediateOperand gets the immediate byte operand of the current instruction
 func ImmediateOperand(p *Processor) byte {
-	return p.byteAt(p.pc + 1)
+	return p.byteAt(p.PC + 1)
 }
 
 func ZeroPageAddress(p *Processor) int {
@@ -38,23 +38,23 @@ func ZeroPageAddress(p *Processor) int {
 }
 
 func ZeroPageXAddress(p *Processor) int {
-	return int(ImmediateOperand(p) + p.x)
+	return int(ImmediateOperand(p) + p.X)
 }
 
 func ZeroPageYAddress(p *Processor) int {
-	return int(ImmediateOperand(p) + p.y)
+	return int(ImmediateOperand(p) + p.Y)
 }
 
 func AddressOperand(p *Processor) int {
-	return p.addressAt(p.pc + 1)
+	return p.addressAt(p.PC + 1)
 }
 
 func AbsoluteXAddress(p *Processor) int {
-	return AddressOperand(p) + int(p.x)
+	return AddressOperand(p) + int(p.X)
 }
 
 func AbsoluteYAddress(p *Processor) int {
-	return AddressOperand(p) + int(p.y)
+	return AddressOperand(p) + int(p.Y)
 }
 
 func IndirectAddress(p *Processor) int {
@@ -62,7 +62,7 @@ func IndirectAddress(p *Processor) int {
 }
 
 func IndexedIndirectOperand(p *Processor) byte {
-	return p.memory[p.addressAt(int(ImmediateOperand(p)+p.x))]
+	return p.Memory[p.addressAt(int(ImmediateOperand(p)+p.X))]
 }
 
 func NoAddress(p *Processor) int {

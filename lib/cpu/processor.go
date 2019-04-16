@@ -1,4 +1,4 @@
-package main
+package cpu
 
 import (
 	"encoding/binary"
@@ -8,12 +8,12 @@ import (
 )
 
 type Processor struct {
-	a      byte
-	x      byte
-	y      byte
+	A      byte
+	X      byte
+	Y      byte
 	f      Flags
-	pc     int
-	memory [65536]byte
+	PC     int
+	Memory [65536]byte
 	jumped bool
 }
 
@@ -24,7 +24,7 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	}
 	defer infile.Close()
 
-	_, err = infile.Read(p.memory[base:])
+	_, err = infile.Read(p.Memory[base:])
 	if err != nil {
 		return err
 	}
@@ -32,16 +32,16 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 }
 
 func (p *Processor) byteAt(addr int) byte {
-	return p.memory[addr]
+	return p.Memory[addr]
 }
 
 func (p *Processor) addressAt(addr int) int {
-	return int(binary.LittleEndian.Uint16(p.memory[addr:]))
+	return int(binary.LittleEndian.Uint16(p.Memory[addr:]))
 }
 
 func (p *Processor) branch(addr int) {
 	offset := asSigned(p.byteAt(addr))
-	p.pc += int(offset)
+	p.PC += int(offset)
 }
 
 func BEQ(p *Processor, addr int) {
@@ -51,100 +51,100 @@ func BEQ(p *Processor, addr int) {
 }
 
 func DEC(p *Processor, addr int) {
-	p.memory[addr]--
-	p.f.SetZ(p.memory[addr])
-	p.f.SetN(p.memory[addr])
+	p.Memory[addr]--
+	p.f.SetZ(p.Memory[addr])
+	p.f.SetN(p.Memory[addr])
 }
 
 func DEX(p *Processor, addr int) {
-	p.x--
-	p.f.SetZ(p.x)
-	p.f.SetN(p.x)
+	p.X--
+	p.f.SetZ(p.X)
+	p.f.SetN(p.X)
 }
 
 func DEY(p *Processor, addr int) {
-	p.y--
-	p.f.SetZ(p.y)
-	p.f.SetN(p.y)
+	p.Y--
+	p.f.SetZ(p.Y)
+	p.f.SetN(p.Y)
 }
 
 func INC(p *Processor, addr int) {
-	p.memory[addr]++
-	p.f.SetZ(p.memory[addr])
-	p.f.SetN(p.memory[addr])
+	p.Memory[addr]++
+	p.f.SetZ(p.Memory[addr])
+	p.f.SetN(p.Memory[addr])
 }
 
 func INX(p *Processor, addr int) {
-	p.x++
-	p.f.SetZ(p.x)
-	p.f.SetN(p.x)
+	p.X++
+	p.f.SetZ(p.X)
+	p.f.SetN(p.X)
 }
 
 func INY(p *Processor, addr int) {
-	p.y++
-	p.f.SetZ(p.y)
-	p.f.SetN(p.y)
+	p.Y++
+	p.f.SetZ(p.Y)
+	p.f.SetN(p.Y)
 }
 
 func JMP(p *Processor, addr int) {
-	p.pc = addr
+	p.PC = addr
 	p.jumped = true
 }
 
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
-	p.a = p.byteAt(addr)
-	p.f.SetZ(p.a)
-	p.f.SetN(p.a)
+	p.A = p.byteAt(addr)
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
 }
 
 // LDX loads a byte into the X register
 func LDX(p *Processor, addr int) {
-	p.x = p.byteAt(addr)
-	p.f.SetZ(p.x)
-	p.f.SetN(p.x)
+	p.X = p.byteAt(addr)
+	p.f.SetZ(p.X)
+	p.f.SetN(p.X)
 }
 
 // LDY loads a byte into the Y register
 func LDY(p *Processor, addr int) {
-	p.y = p.byteAt(addr)
-	p.f.SetZ(p.y)
-	p.f.SetN(p.y)
+	p.Y = p.byteAt(addr)
+	p.f.SetZ(p.Y)
+	p.f.SetN(p.Y)
 }
 
 func STA(p *Processor, address int) {
-	p.memory[address] = p.a
+	p.Memory[address] = p.A
 }
 
 func STX(p *Processor, address int) {
-	p.memory[address] = p.x
+	p.Memory[address] = p.X
 }
 
 func STY(p *Processor, address int) {
-	p.memory[address] = p.y
+	p.Memory[address] = p.Y
 }
 
 func TAX(p *Processor, addr int) {
-	p.x = p.a
-	p.f.SetZ(p.x)
-	p.f.SetN(p.x)
+	p.X = p.A
+	p.f.SetZ(p.X)
+	p.f.SetN(p.X)
 }
 
 func TAY(p *Processor, addr int) {
-	p.y = p.a
-	p.f.SetZ(p.y)
-	p.f.SetN(p.y)
+	p.Y = p.A
+	p.f.SetZ(p.Y)
+	p.f.SetN(p.Y)
 }
 
 func (p *Processor) Emulate() error {
-	opcode := p.memory[p.pc]
+	opcode := p.Memory[p.PC]
 
 	if ins, ok := Ops6502[opcode]; ok {
 		ins.Execute(p)
 		if p.jumped {
 			p.jumped = false
 		} else {
-			p.pc += ins.Length
+			p.PC += ins.Length
 		}
 		return nil
 	}

@@ -44,8 +44,20 @@ func (p *Processor) branch(addr int) {
 	p.PC += int(offset)
 }
 
+func AND(p *Processor, addr int) {
+	p.A &= p.Memory[addr]
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+}
+
 func BEQ(p *Processor, addr int) {
 	if p.f.Z {
+		p.branch(addr)
+	}
+}
+
+func BNE(p *Processor, addr int) {
+	if !p.f.Z {
 		p.branch(addr)
 	}
 }

@@ -86,11 +86,12 @@ var testJMP = Program{
 
 var testBranch = Program{
 	MachineCodeFile: "asm/test-branch.bin",
-	Description:     "BEQ",
-	FinalState:      Registers{0x00, 0x28, 0xcd},
+	Description:     "Branch",
+	FinalState:      Registers{0xfa, 0x9f, 0x82},
 	FinalMemory: []MemoryMatch{
 		MemoryMatch{0x00, []byte{0x00}, "No error"},
 		MemoryMatch{0x01, []byte{0x28, 0xcd}, "BEQ"},
+		MemoryMatch{0x03, []byte{0x9f, 0x82}, "BNE"},
 	},
 }
 
@@ -103,7 +104,16 @@ var testStrcpy = Program{
 	},
 }
 
-var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch, testStrcpy}
+var testAnd = Program{
+	MachineCodeFile: "asm/test-and.bin",
+	Description:     "AND instructions",
+	FinalState:      Registers{0x40, 0x00, 0x00},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x00, []byte{0x40}, "AND Immediate"},
+	},
+}
+
+var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch, testStrcpy, testAnd}
 
 func main() {
 	for _, test := range tests {

@@ -71,6 +71,8 @@ func NoAddress(p *Processor) int {
 
 // Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
+	0x29: Instruction{0x29, ImmediateAddress, AND, 2},
+
 	0x4c: Instruction{0x4c, AddressOperand, JMP, 3},
 
 	0x6c: Instruction{0x6c, IndirectAddress, JMP, 3},
@@ -114,6 +116,7 @@ var Ops6502 = map[byte]Instruction{
 	0xca: Instruction{0xc8, NoAddress, DEX, 1},
 	0xce: Instruction{0xce, AddressOperand, DEC, 3},
 
+	0xd0: Instruction{0xd0, ImmediateAddress, BNE, 2},
 	0xd6: Instruction{0xd6, ZeroPageXAddress, DEC, 2},
 	0xde: Instruction{0xde, AbsoluteXAddress, DEC, 3},
 

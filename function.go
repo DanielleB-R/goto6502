@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/DanielleB-R/goto6502/lib/cpu"
 )
@@ -40,8 +41,13 @@ type Program struct {
 }
 
 func (p *Program) Check() bool {
-	cpu := cpu.NewProcessor(0x1000)
-	cpu.LoadMemory(p.MachineCodeFile, 0x1000)
+	infile, err := os.Open(p.MachineCodeFile)
+	if err != nil {
+		panic(err)
+	}
+	defer infile.Close()
+
+	cpu := cpu.NewProcessor(0x1000, infile)
 
 	for cpu.Memory.Read(cpu.PC) != 0 {
 		err := cpu.Emulate()

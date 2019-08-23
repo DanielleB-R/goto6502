@@ -3,6 +3,7 @@ package cpu
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/DanielleB-R/goto6502/lib/memory"
@@ -18,10 +19,10 @@ type Processor struct {
 	jumped bool
 }
 
-func NewProcessor(initialPC int) Processor {
+func NewProcessor(initialPC int, rom io.Reader) Processor {
 	return Processor{
 		PC:     initialPC,
-		Memory: memory.NewMemoryMap(),
+		Memory: memory.NewMemoryMap(rom),
 	}
 }
 

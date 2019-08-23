@@ -1,6 +1,9 @@
 package memory
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+	"io"
+)
 
 type Memory interface {
 	Read(addr int) byte
@@ -35,6 +38,39 @@ func (r *RandomAccessMemory) Length() int {
 	return len(r.Contents)
 }
 
+type ReadOnlyMemory struct {
+	Contents []byte
+}
+
+func NewReadOnlyMemory(size int, data io.Reader) *ReadOnlyMemory {
+	contents := make([]byte, size)
+
+	_, err := data.Read(contents)
+	if err != nil {
+		panic(err)
+	}
+
+	return &ReadOnlyMemory{
+		Contents: contents,
+	}
+}
+
+func (r *ReadOnlyMemory) Read(addr int) byte {
+	return r.Contents[addr]
+}
+
+func (r *ReadOnlyMemory) ReadWord(addr int) int {
+	return int(binary.LittleEndian.Uint16(r.Contents[addr:]))
+}
+
+func (r *ReadOnlyMemory) Write(addr int, data byte) {
+	// we do nothing for now
+}
+
+func (r *ReadOnlyMemory) Length() int {
+	return len(r.Contents)
+}
+
 type MemoryMapEntry struct {
 	BaseAddr int
 	LastAddr int
@@ -46,11 +82,19 @@ type MemoryMap struct {
 }
 
 // This can be anything, right now it's this
-func NewMemoryMap() *MemoryMap {
+func NewMemoryMap(rom io.Reader) *MemoryMap {
 	entries := []MemoryMapEntry{
 		{
 			BaseAddr: 0,
-			Block:    NewRandomAccessMemory(65536),
+			Block:    NewRandomAccessMemory(0x1000),
+		},
+		{
+			BaseAddr: 0x1000,
+			Block:    NewReadOnlyMemory(0x1000, rom),
+		},
+		{
+			BaseAddr: 0x2000,
+			Block:    NewRandomAccessMemory(65536 - 0x2000),
 		},
 	}
 

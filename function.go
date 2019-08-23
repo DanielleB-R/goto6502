@@ -24,8 +24,8 @@ type MemoryMatch struct {
 
 func (m *MemoryMatch) Matches(processor *cpu.Processor) bool {
 	for offset, n := range m.data {
-		if processor.Memory[m.base+offset] != n {
-			fmt.Printf("Failure in %s, %x should be %x\n", m.name, processor.Memory[m.base+offset], n)
+		if v := processor.Memory.Read(m.base + offset); v != n {
+			fmt.Printf("Failure in %s, %x should be %x\n", m.name, v, n)
 			return false
 		}
 	}
@@ -40,10 +40,10 @@ type Program struct {
 }
 
 func (p *Program) Check() bool {
-	cpu := cpu.Processor{PC: 0x1000}
+	cpu := cpu.NewProcessor(0x1000)
 	cpu.LoadMemory(p.MachineCodeFile, 0x1000)
 
-	for cpu.Memory[cpu.PC] != 0 {
+	for cpu.Memory.Read(cpu.PC) != 0 {
 		err := cpu.Emulate()
 		if err != nil {
 			panic(err)

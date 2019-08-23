@@ -1,10 +1,11 @@
 package cpu
 
 import (
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"os"
+
+	"github.com/DanielleB-R/goto6502/lib/memory"
 )
 
 type Processor struct {
@@ -13,8 +14,15 @@ type Processor struct {
 	Y      byte
 	f      Flags
 	PC     int
-	Memory [65536]byte
+	Memory memory.Memory
 	jumped bool
+}
+
+func NewProcessor(initialPC int) Processor {
+	return Processor{
+		PC:     initialPC,
+		Memory: memory.NewRandomAccessMemory(65536),
+	}
 }
 
 func (p *Processor) LoadMemory(filename string, base int) error {
@@ -24,7 +32,10 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	}
 	defer infile.Close()
 
-	_, err = infile.Read(p.Memory[base:])
+	// This is a hack
+	m := p.Memory.(*memory.RandomAccessMemory)
+
+	_, err = infile.Read(m.Contents[base:])
 	if err != nil {
 		return err
 	}
@@ -32,11 +43,11 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 }
 
 func (p *Processor) byteAt(addr int) byte {
-	return p.Memory[addr]
+	return p.Memory.Read(addr)
 }
 
 func (p *Processor) addressAt(addr int) int {
-	return int(binary.LittleEndian.Uint16(p.Memory[addr:]))
+	return p.Memory.ReadWord(addr)
 }
 
 func (p *Processor) branch(addr int) {
@@ -45,7 +56,7 @@ func (p *Processor) branch(addr int) {
 }
 
 func AND(p *Processor, addr int) {
-	p.A &= p.Memory[addr]
+	p.A &= p.Memory.Read(addr)
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
 }
@@ -63,9 +74,11 @@ func BNE(p *Processor, addr int) {
 }
 
 func DEC(p *Processor, addr int) {
-	p.Memory[addr]--
-	p.f.SetZ(p.Memory[addr])
-	p.f.SetN(p.Memory[addr])
+	n := p.Memory.Read(addr)
+	n--
+	p.Memory.Write(addr, n)
+	p.f.SetZ(n)
+	p.f.SetN(n)
 }
 
 func DEX(p *Processor, addr int) {
@@ -81,9 +94,11 @@ func DEY(p *Processor, addr int) {
 }
 
 func INC(p *Processor, addr int) {
-	p.Memory[addr]++
-	p.f.SetZ(p.Memory[addr])
-	p.f.SetN(p.Memory[addr])
+	n := p.Memory.Read(addr)
+	n++
+	p.Memory.Write(addr, n)
+	p.f.SetZ(n)
+	p.f.SetN(n)
 }
 
 func INX(p *Processor, addr int) {
@@ -125,21 +140,21 @@ func LDY(p *Processor, addr int) {
 }
 
 func ORA(p *Processor, addr int) {
-	p.A |= p.Memory[addr]
+	p.A |= p.Memory.Read(addr)
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
 }
 
 func STA(p *Processor, address int) {
-	p.Memory[address] = p.A
+	p.Memory.Write(address, p.A)
 }
 
 func STX(p *Processor, address int) {
-	p.Memory[address] = p.X
+	p.Memory.Write(address, p.X)
 }
 
 func STY(p *Processor, address int) {
-	p.Memory[address] = p.Y
+	p.Memory.Write(address, p.Y)
 }
 
 func TAX(p *Processor, addr int) {
@@ -155,7 +170,7 @@ func TAY(p *Processor, addr int) {
 }
 
 func (p *Processor) Emulate() error {
-	opcode := p.Memory[p.PC]
+	opcode := p.Memory.Read(p.PC)
 
 	if ins, ok := Ops6502[opcode]; ok {
 		ins.Execute(p)

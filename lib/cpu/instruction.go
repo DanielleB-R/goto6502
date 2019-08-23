@@ -62,7 +62,7 @@ func IndirectAddress(p *Processor) int {
 }
 
 func IndexedIndirectOperand(p *Processor) byte {
-	return p.Memory[p.addressAt(int(ImmediateOperand(p)+p.X))]
+	return p.Memory.Read(p.addressAt(int(ImmediateOperand(p) + p.X)))
 }
 
 func NoAddress(p *Processor) int {

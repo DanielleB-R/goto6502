@@ -21,7 +21,7 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-lda.bin",
 		Description:     "LD? All Addressing Modes",
-		FinalState:      Registers{0x44, 0x01, 0x11},
+		FinalState:      Registers{0xa9, 0x01, 0x11},
 		FinalMemory: []MemoryMatch{
 			MemoryMatch{0x00, []byte{0x22, 0x01, 0x10}, "Zero Page"},
 			MemoryMatch{0x03, []byte{0xa9, 0xa2, 0xa0}, "Absolute"},
@@ -29,6 +29,7 @@ var TestPrograms = []Program{
 			MemoryMatch{0x08, []byte{0xa0, 0xa2}, "Absolute, Y"},
 			MemoryMatch{0x0a, []byte{0x10, 0x01}, "Zero Page, X"},
 			MemoryMatch{0x0c, []byte{0x01}, "Zero Page, Y"},
+			MemoryMatch{0x0d, []byte{0xa9}, "Indexed Indirect, X"},
 		},
 	},
 

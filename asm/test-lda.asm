@@ -50,3 +50,11 @@
         ldy #$11
         ldx $f0,Y
         stx $0c                 ; Expect $01
+
+;;; Load indexed indirect
+        lda #$00
+        sta $81
+        lda #$10
+        sta $82
+        lda ($80,X)
+        sta $0d                 ; Expect $a9

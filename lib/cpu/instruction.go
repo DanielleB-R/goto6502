@@ -64,9 +64,10 @@ func IndirectAddress(p *Processor) int {
 	return p.Memory.ReadWord(AddressOperand(p))
 }
 
-// func IndexedIndirectOperand(p *Processor) byte {
-// 	return p.Memory.Read(p.addressAt(int(ImmediateOperand(p) + p.X)))
-// }
+func IndexedIndirectAddress(p *Processor) int {
+	addr := (int(ImmediateOperand(p)) + int(p.X)) & 0xff
+	return p.Memory.ReadWord(addr)
+}
 
 func NoAddress(p *Processor) int {
 	return 0
@@ -105,6 +106,7 @@ var Ops6502 = map[byte]Instruction{
 	0x9d: Instruction{0x9d, AbsoluteXAddress, STA, 3},
 
 	0xa0: Instruction{0xa0, ImmediateAddress, LDY, 2},
+	0xa1: Instruction{0xa1, IndexedIndirectAddress, LDA, 2},
 	0xa2: Instruction{0xa2, ImmediateAddress, LDX, 2},
 	0xa4: Instruction{0xa4, ZeroPageAddress, LDY, 2},
 	0xa5: Instruction{0xa5, ZeroPageAddress, LDA, 2},

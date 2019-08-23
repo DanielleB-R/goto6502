@@ -41,14 +41,14 @@ type Program struct {
 
 func (p *Program) checkProgram(t *testing.T) {
 	infile, err := os.Open(p.MachineCodeFile)
-	require.Nil(t, err)
+	require.NoError(t, err)
 	defer infile.Close()
 
 	cpu := NewProcessor(0x1000, infile)
 
 	for cpu.Memory.Read(cpu.PC) != 0 {
 		err := cpu.Emulate()
-		require.Nil(t, err)
+		require.NoError(t, err)
 	}
 
 	for _, mem := range p.FinalMemory {

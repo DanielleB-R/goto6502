@@ -2,11 +2,14 @@ package cpu
 
 // Instruction data
 
+type OperandFn func(*Processor) int
+type OperationFn func(*Processor, int)
+
 // Instruction contains the details for a single 6502 instruction
 type Instruction struct {
 	Opcode    byte
-	Operand   func(*Processor) int
-	Operation func(*Processor, int)
+	Operand   OperandFn
+	Operation OperationFn
 	Length    int
 }
 

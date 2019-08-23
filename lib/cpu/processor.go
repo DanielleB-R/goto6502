@@ -21,7 +21,7 @@ type Processor struct {
 func NewProcessor(initialPC int) Processor {
 	return Processor{
 		PC:     initialPC,
-		Memory: memory.NewRandomAccessMemory(65536),
+		Memory: memory.NewMemoryMap(),
 	}
 }
 
@@ -33,7 +33,7 @@ func (p *Processor) LoadMemory(filename string, base int) error {
 	defer infile.Close()
 
 	// This is a hack
-	m := p.Memory.(*memory.RandomAccessMemory)
+	m := p.Memory.(*memory.MemoryMap).Entries[0].Block.(*memory.RandomAccessMemory)
 
 	_, err = infile.Read(m.Contents[base:])
 	if err != nil {

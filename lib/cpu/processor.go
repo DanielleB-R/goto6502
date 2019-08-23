@@ -124,6 +124,12 @@ func LDY(p *Processor, addr int) {
 	p.f.SetN(p.Y)
 }
 
+func ORA(p *Processor, addr int) {
+	p.A |= p.Memory[addr]
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+}
+
 func STA(p *Processor, address int) {
 	p.Memory[address] = p.A
 }

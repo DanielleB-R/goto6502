@@ -71,6 +71,12 @@ func NoAddress(p *Processor) int {
 
 // Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
+	0x09: Instruction{0x09, ImmediateAddress, ORA, 2},
+	0x0d: Instruction{0x0d, AddressOperand, ORA, 3},
+
+	0x19: Instruction{0x19, AbsoluteYAddress, ORA, 3},
+	0x1d: Instruction{0x1d, AbsoluteXAddress, ORA, 3},
+
 	0x29: Instruction{0x29, ImmediateAddress, AND, 2},
 	0x2d: Instruction{0x2d, AddressOperand, AND, 3},
 

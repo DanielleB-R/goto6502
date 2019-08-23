@@ -116,7 +116,19 @@ var testAnd = Program{
 	},
 }
 
-var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch, testStrcpy, testAnd}
+var testOra = Program{
+	MachineCodeFile: "asm/test-ora.bin",
+	Description:     "ORA instructions",
+	FinalState:      Registers{0x9d, 0x02, 0x03},
+	FinalMemory: []MemoryMatch{
+		MemoryMatch{0x00, []byte{0xf4}, "ORA Immediate"},
+		MemoryMatch{0x01, []byte{0xf9}, "ORA Absolute"},
+		MemoryMatch{0x02, []byte{0x9f}, "ORA Absolute X"},
+		MemoryMatch{0x03, []byte{0x9d}, "ORA Absolute Y"},
+	},
+}
+
+var tests = []Program{test1, test2, test4, testLD, testST, testINC, testDEC, testJMP, testBranch, testStrcpy, testAnd, testOra}
 
 func main() {
 	for _, test := range tests {

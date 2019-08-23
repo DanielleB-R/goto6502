@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 
 	"github.com/DanielleB-R/goto6502/lib/memory"
 )
@@ -26,33 +25,8 @@ func NewProcessor(initialPC int, rom io.Reader) Processor {
 	}
 }
 
-func (p *Processor) LoadMemory(filename string, base int) error {
-	infile, err := os.Open(filename)
-	if err != nil {
-		return err
-	}
-	defer infile.Close()
-
-	// This is a hack
-	m := p.Memory.(*memory.MemoryMap).Entries[0].Block.(*memory.RandomAccessMemory)
-
-	_, err = infile.Read(m.Contents[base:])
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *Processor) byteAt(addr int) byte {
-	return p.Memory.Read(addr)
-}
-
-func (p *Processor) addressAt(addr int) int {
-	return p.Memory.ReadWord(addr)
-}
-
 func (p *Processor) branch(addr int) {
-	offset := asSigned(p.byteAt(addr))
+	offset := asSigned(p.Memory.Read(addr))
 	p.PC += int(offset)
 }
 
@@ -121,21 +95,21 @@ func JMP(p *Processor, addr int) {
 
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
-	p.A = p.byteAt(addr)
+	p.A = p.Memory.Read(addr)
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
 }
 
 // LDX loads a byte into the X register
 func LDX(p *Processor, addr int) {
-	p.X = p.byteAt(addr)
+	p.X = p.Memory.Read(addr)
 	p.f.SetZ(p.X)
 	p.f.SetN(p.X)
 }
 
 // LDY loads a byte into the Y register
 func LDY(p *Processor, addr int) {
-	p.Y = p.byteAt(addr)
+	p.Y = p.Memory.Read(addr)
 	p.f.SetZ(p.Y)
 	p.f.SetN(p.Y)
 }

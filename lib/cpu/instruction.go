@@ -33,7 +33,7 @@ func ImmediateAddress(p *Processor) int {
 
 // ImmediateOperand gets the immediate byte operand of the current instruction
 func ImmediateOperand(p *Processor) byte {
-	return p.byteAt(p.PC + 1)
+	return p.Memory.Read(ImmediateAddress(p))
 }
 
 func ZeroPageAddress(p *Processor) int {
@@ -49,7 +49,7 @@ func ZeroPageYAddress(p *Processor) int {
 }
 
 func AddressOperand(p *Processor) int {
-	return p.addressAt(p.PC + 1)
+	return p.Memory.ReadWord(ImmediateAddress(p))
 }
 
 func AbsoluteXAddress(p *Processor) int {
@@ -61,12 +61,12 @@ func AbsoluteYAddress(p *Processor) int {
 }
 
 func IndirectAddress(p *Processor) int {
-	return p.addressAt(AddressOperand(p))
+	return p.Memory.ReadWord(AddressOperand(p))
 }
 
-func IndexedIndirectOperand(p *Processor) byte {
-	return p.Memory.Read(p.addressAt(int(ImmediateOperand(p) + p.X)))
-}
+// func IndexedIndirectOperand(p *Processor) byte {
+// 	return p.Memory.Read(p.addressAt(int(ImmediateOperand(p) + p.X)))
+// }
 
 func NoAddress(p *Processor) int {
 	return 0

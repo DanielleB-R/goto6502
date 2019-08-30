@@ -83,6 +83,7 @@ var Ops6502 = map[byte]Instruction{
 	0x09: Instruction{0x09, ImmediateAddress, ORA, 2},
 	0x0d: Instruction{0x0d, AddressOperand, ORA, 3},
 
+	0x10: Instruction{0x10, ImmediateAddress, BPL, 2},
 	0x15: Instruction{0x15, ZeroPageXAddress, ORA, 2},
 	0x19: Instruction{0x19, AbsoluteYAddress, ORA, 3},
 	0x1d: Instruction{0x1d, AbsoluteXAddress, ORA, 3},

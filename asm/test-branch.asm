@@ -21,6 +21,18 @@ zero:   stx $01                 ; Expect $28
         ldy #$ff
 nonz:   stx $03                 ; Expect $9f
         sty $04                 ; Expect $82
+
+;;; BPL relative
+        ldx #$de
+        ldy #$8b
+        lda #$ff
+        bpl error
+        lda #$7a
+        bpl plus
+        ldx #$ff
+        ldy #$ff
+plus:   stx $05                 ; Expect $de
+        sty $06                 ; Expect $8b
         brk
 
 ;;;

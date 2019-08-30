@@ -48,6 +48,12 @@ func BNE(p *Processor, addr int) {
 	}
 }
 
+func BPL(p *Processor, addr int) {
+	if !p.f.N {
+		p.branch(addr)
+	}
+}
+
 func DEC(p *Processor, addr int) {
 	n := p.Memory.Read(addr)
 	n--

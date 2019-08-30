@@ -115,12 +115,14 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-ora.bin",
 		Description:     "ORA instructions",
-		FinalState:      Registers{0x9d, 0x02, 0x03},
+		FinalState:      Registers{0x11, 0x0c, 0x03},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x00, []byte{0xf4}, "ORA Immediate"},
-			MemoryMatch{0x01, []byte{0xf9}, "ORA Absolute"},
-			MemoryMatch{0x02, []byte{0x9f}, "ORA Absolute X"},
-			MemoryMatch{0x03, []byte{0x9d}, "ORA Absolute Y"},
+			{0x00, []byte{0xf4}, "ORA Immediate"},
+			{0x01, []byte{0xf9}, "ORA Absolute"},
+			{0x02, []byte{0x9f}, "ORA Absolute X"},
+			{0x03, []byte{0x9d}, "ORA Absolute Y"},
+			{0x04, []byte{0xd9}, "ORA Zero Page"},
+			{0x05, []byte{0x11}, "ORA Zero Page X"},
 		},
 	},
 }

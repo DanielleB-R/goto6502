@@ -23,3 +23,16 @@
         ldy #$03
         ora $4ffd,Y
         sta $03                 ; Expect $9d
+
+;;; ORA zero page
+        ldx #$11
+        stx $cc
+        lda #$c8
+        ora $cc
+        sta $04                 ; Expect $d9
+
+;;; ORA zero page,X
+        lda #$00
+        ldx #$0c
+        ora $c0,X
+        sta $05                 ; Expect $11

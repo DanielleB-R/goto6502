@@ -65,8 +65,12 @@ func IndirectAddress(p *Processor) int {
 }
 
 func IndexedIndirectAddress(p *Processor) int {
-	addr := (int(ImmediateOperand(p)) + int(p.X)) & 0xff
+	addr := (ZeroPageAddress(p) + int(p.X)) & 0xff
 	return p.Memory.ReadWord(addr)
+}
+
+func IndirectIndexedAddress(p *Processor) int {
+	return p.Memory.ReadWord(ZeroPageAddress(p)) + int(p.Y)
 }
 
 func NoAddress(p *Processor) int {
@@ -75,9 +79,11 @@ func NoAddress(p *Processor) int {
 
 // Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
+	0x05: Instruction{0x05, ZeroPageAddress, ORA, 2},
 	0x09: Instruction{0x09, ImmediateAddress, ORA, 2},
 	0x0d: Instruction{0x0d, AddressOperand, ORA, 3},
 
+	0x15: Instruction{0x15, ZeroPageXAddress, ORA, 2},
 	0x19: Instruction{0x19, AbsoluteYAddress, ORA, 3},
 	0x1d: Instruction{0x1d, AbsoluteXAddress, ORA, 3},
 

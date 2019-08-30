@@ -140,4 +140,15 @@ var TestPrograms = []Program{
 			MemoryMatch{0x04, []byte{0x27}, "CLC"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-shift.bin",
+		Description:     "Shift instructions",
+		FinalState:      Registers{0x79, 0xff, 0x00},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0x00}, "No error"},
+			{0x01, []byte{0x1e}, "ASL"},
+			{0x02, []byte{0x79}, "LSR"},
+		},
+	},
 }

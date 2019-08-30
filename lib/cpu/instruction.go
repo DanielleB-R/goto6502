@@ -81,6 +81,7 @@ func NoAddress(p *Processor) int {
 var Ops6502 = map[byte]Instruction{
 	0x05: Instruction{0x05, ZeroPageAddress, ORA, 2},
 	0x09: Instruction{0x09, ImmediateAddress, ORA, 2},
+	0x0a: Instruction{0x0a, NoAddress, ASL, 1},
 	0x0d: Instruction{0x0d, AddressOperand, ORA, 3},
 
 	0x10: Instruction{0x10, ImmediateAddress, BPL, 2},
@@ -97,6 +98,7 @@ var Ops6502 = map[byte]Instruction{
 	0x39: Instruction{0x39, AbsoluteYAddress, AND, 3},
 	0x3d: Instruction{0x3d, AbsoluteXAddress, AND, 3},
 
+	0x4a: Instruction{0x4a, NoAddress, LSR, 1},
 	0x4c: Instruction{0x4c, AddressOperand, JMP, 3},
 
 	0x6c: Instruction{0x6c, IndirectAddress, JMP, 3},

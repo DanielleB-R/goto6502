@@ -36,6 +36,13 @@ func AND(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
+func ASL(p *Processor, addr int) {
+	p.f.C = p.A&0x80 != 0
+	p.A <<= 1
+	p.f.SetN(p.A)
+	p.f.SetN(p.A)
+}
+
 func BCC(p *Processor, addr int) {
 	if !p.f.C {
 		p.branch(addr)
@@ -140,6 +147,13 @@ func LDY(p *Processor, addr int) {
 	p.Y = p.Memory.Read(addr)
 	p.f.SetZ(p.Y)
 	p.f.SetN(p.Y)
+}
+
+func LSR(p *Processor, addr int) {
+	p.f.C = p.A&0x01 != 0
+	p.A >>= 1
+	p.f.SetN(p.A)
+	p.f.SetN(p.A)
 }
 
 func ORA(p *Processor, addr int) {

@@ -36,6 +36,18 @@ func AND(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
+func BCC(p *Processor, addr int) {
+	if !p.f.C {
+		p.branch(addr)
+	}
+}
+
+func BCS(p *Processor, addr int) {
+	if p.f.C {
+		p.branch(addr)
+	}
+}
+
 func BEQ(p *Processor, addr int) {
 	if p.f.Z {
 		p.branch(addr)
@@ -58,6 +70,10 @@ func BPL(p *Processor, addr int) {
 	if !p.f.N {
 		p.branch(addr)
 	}
+}
+
+func CLC(p *Processor, addr int) {
+	p.f.C = false
 }
 
 func DEC(p *Processor, addr int) {
@@ -130,6 +146,10 @@ func ORA(p *Processor, addr int) {
 	p.A |= p.Memory.Read(addr)
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
+}
+
+func SEC(p *Processor, address int) {
+	p.f.C = true
 }
 
 func STA(p *Processor, address int) {

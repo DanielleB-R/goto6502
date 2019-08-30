@@ -3,6 +3,7 @@ package cpu
 type Flags struct {
 	Z bool
 	N bool
+	C bool
 }
 
 func (f *Flags) SetZ(n byte) {

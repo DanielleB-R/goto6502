@@ -127,4 +127,17 @@ var TestPrograms = []Program{
 			{0x05, []byte{0x11}, "ORA Zero Page X"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-carry.bin",
+		Description:     "Carry flag instructions",
+		FinalState:      Registers{0x27, 0x00, 0x00},
+		FinalMemory: []MemoryMatch{
+			MemoryMatch{0x00, []byte{0x00}, "No error"},
+			MemoryMatch{0x01, []byte{0xaa}, "BCC"},
+			MemoryMatch{0x02, []byte{0xed}, "SEC"},
+			MemoryMatch{0x03, []byte{0x86}, "BCS"},
+			MemoryMatch{0x04, []byte{0x27}, "CLC"},
+		},
+	},
 }

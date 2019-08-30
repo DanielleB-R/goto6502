@@ -42,6 +42,12 @@ func BEQ(p *Processor, addr int) {
 	}
 }
 
+func BMI(p *Processor, addr int) {
+	if p.f.N {
+		p.branch(addr)
+	}
+}
+
 func BNE(p *Processor, addr int) {
 	if !p.f.Z {
 		p.branch(addr)

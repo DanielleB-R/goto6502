@@ -83,12 +83,13 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-branch.bin",
 		Description:     "Branch",
-		FinalState:      Registers{0x7a, 0xde, 0x8b},
+		FinalState:      Registers{0xf9, 0xde, 0x8b},
 		FinalMemory: []MemoryMatch{
 			MemoryMatch{0x00, []byte{0x00}, "No error"},
 			MemoryMatch{0x01, []byte{0x28, 0xcd}, "BEQ"},
 			MemoryMatch{0x03, []byte{0x9f, 0x82}, "BNE"},
 			MemoryMatch{0x05, []byte{0xde, 0x8b}, "BPL"},
+			MemoryMatch{0x07, []byte{0xde, 0x8b}, "BMI"},
 		},
 	},
 

@@ -33,6 +33,18 @@ nonz:   stx $03                 ; Expect $9f
         ldy #$ff
 plus:   stx $05                 ; Expect $de
         sty $06                 ; Expect $8b
+
+;;; BMI relative
+        ldx #$de
+        ldy #$8b
+        lda #$33
+        bmi error
+        lda #$f9
+        bmi minus
+        ldx #$ff
+        ldy #$ff
+minus:  stx $07                 ; Expect $de
+        sty $08                 ; Expect $8b
         brk
 
 ;;;

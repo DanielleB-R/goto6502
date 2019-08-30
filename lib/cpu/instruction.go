@@ -91,6 +91,7 @@ var Ops6502 = map[byte]Instruction{
 	0x29: Instruction{0x29, ImmediateAddress, AND, 2},
 	0x2d: Instruction{0x2d, AddressOperand, AND, 3},
 
+	0x30: Instruction{0x30, ImmediateAddress, BMI, 2},
 	0x39: Instruction{0x39, AbsoluteYAddress, AND, 3},
 	0x3d: Instruction{0x3d, AbsoluteXAddress, AND, 3},
 

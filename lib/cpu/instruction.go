@@ -91,6 +91,7 @@ var Ops6502 = map[byte]Instruction{
 	0x1d: Instruction{0x1d, AbsoluteXAddress, ORA, 3},
 
 	0x29: Instruction{0x29, ImmediateAddress, AND, 2},
+	0x2a: Instruction{0x2a, NoAddress, ROL, 1},
 	0x2d: Instruction{0x2d, AddressOperand, AND, 3},
 
 	0x30: Instruction{0x30, ImmediateAddress, BMI, 2},
@@ -101,6 +102,7 @@ var Ops6502 = map[byte]Instruction{
 	0x4a: Instruction{0x4a, NoAddress, LSR, 1},
 	0x4c: Instruction{0x4c, AddressOperand, JMP, 3},
 
+	0x6a: Instruction{0x6a, NoAddress, ROR, 1},
 	0x6c: Instruction{0x6c, IndirectAddress, JMP, 3},
 
 	0x84: Instruction{0x84, ZeroPageAddress, STY, 2},

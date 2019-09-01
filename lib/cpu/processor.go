@@ -162,6 +162,30 @@ func ORA(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
+func ROL(p *Processor, addr int) {
+	var carry byte
+	if p.f.C {
+		carry = 0x01
+	}
+	p.f.C = p.A&0x80 != 0
+	p.A <<= 1
+	p.A |= carry
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+}
+
+func ROR(p *Processor, addr int) {
+	var carry byte
+	if p.f.C {
+		carry = 0x80
+	}
+	p.f.C = p.A&0x01 != 0
+	p.A >>= 1
+	p.A |= carry
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+}
+
 func SEC(p *Processor, address int) {
 	p.f.C = true
 }

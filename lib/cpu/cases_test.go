@@ -144,11 +144,13 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-shift.bin",
 		Description:     "Shift instructions",
-		FinalState:      Registers{0x79, 0xff, 0x00},
+		FinalState:      Registers{0xa0, 0xff, 0x00},
 		FinalMemory: []MemoryMatch{
 			{0x00, []byte{0x00}, "No error"},
 			{0x01, []byte{0x1e}, "ASL"},
 			{0x02, []byte{0x79}, "LSR"},
+			{0x03, []byte{0x02, 0x05}, "ROL"},
+			{0x05, []byte{0x40, 0xa0}, "ROR"},
 		},
 	},
 }

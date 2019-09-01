@@ -10,7 +10,7 @@ var TestPrograms = []Program{
 		MachineCodeFile: "../../asm/test2.bin",
 		Description:     "ST? Zero Page",
 		FinalState:      Registers{0x01, 0x10, 0x22},
-		FinalMemory:     []MemoryMatch{MemoryMatch{0xa0, []byte{0x01, 0x10, 0x22}, "ST? Zero Page"}},
+		FinalMemory:     []MemoryMatch{{0xa0, []byte{0x01, 0x10, 0x22}, "ST? Zero Page"}},
 	},
 	Program{
 		MachineCodeFile: "../../asm/test4.bin",
@@ -23,13 +23,13 @@ var TestPrograms = []Program{
 		Description:     "LD? All Addressing Modes",
 		FinalState:      Registers{0xa9, 0x01, 0x11},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x00, []byte{0x22, 0x01, 0x10}, "Zero Page"},
-			MemoryMatch{0x03, []byte{0xa9, 0xa2, 0xa0}, "Absolute"},
-			MemoryMatch{0x06, []byte{0xa2, 0xa9}, "Absolute, X"},
-			MemoryMatch{0x08, []byte{0xa0, 0xa2}, "Absolute, Y"},
-			MemoryMatch{0x0a, []byte{0x10, 0x01}, "Zero Page, X"},
-			MemoryMatch{0x0c, []byte{0x01}, "Zero Page, Y"},
-			MemoryMatch{0x0d, []byte{0xa9}, "Indexed Indirect, X"},
+			{0x00, []byte{0x22, 0x01, 0x10}, "Zero Page"},
+			{0x03, []byte{0xa9, 0xa2, 0xa0}, "Absolute"},
+			{0x06, []byte{0xa2, 0xa9}, "Absolute, X"},
+			{0x08, []byte{0xa0, 0xa2}, "Absolute, Y"},
+			{0x0a, []byte{0x10, 0x01}, "Zero Page, X"},
+			{0x0c, []byte{0x01}, "Zero Page, Y"},
+			{0x0d, []byte{0xa9}, "Indexed Indirect, X"},
 		},
 	},
 
@@ -38,11 +38,11 @@ var TestPrograms = []Program{
 		Description:     "ST? All Addressing Modes",
 		FinalState:      Registers{0x80, 0xef, 0x22},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x2000, []byte{0x22, 0x55, 0xbb}, "Absolute"},
-			MemoryMatch{0x2010, []byte{0x22}, "Absolute, X"},
-			MemoryMatch{0x2020, []byte{0x22}, "Absolute, Y"},
-			MemoryMatch{0x30, []byte{0x80, 0x75}, "Zero Page, X"},
-			MemoryMatch{0x33, []byte{0xef}, "Zero Page, Y"},
+			{0x2000, []byte{0x22, 0x55, 0xbb}, "Absolute"},
+			{0x2010, []byte{0x22}, "Absolute, X"},
+			{0x2020, []byte{0x22}, "Absolute, Y"},
+			{0x30, []byte{0x80, 0x75}, "Zero Page, X"},
+			{0x33, []byte{0xef}, "Zero Page, Y"},
 		},
 	},
 
@@ -51,10 +51,10 @@ var TestPrograms = []Program{
 		Description:     "IN? All Addressing Modes",
 		FinalState:      Registers{0x1f, 0x04, 0x8c},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x01, []byte{0xa7, 0xa8}, "INX"},
-			MemoryMatch{0x03, []byte{0x89, 0x8c}, "INY"},
-			MemoryMatch{0x2020, []byte{0xad, 0x26}, "INC Absolute"},
-			MemoryMatch{0x05, []byte{0x21, 0x20}, "INC Zero Page"},
+			{0x01, []byte{0xa7, 0xa8}, "INX"},
+			{0x03, []byte{0x89, 0x8c}, "INY"},
+			{0x2020, []byte{0xad, 0x26}, "INC Absolute"},
+			{0x05, []byte{0x21, 0x20}, "INC Zero Page"},
 		},
 	},
 
@@ -63,10 +63,10 @@ var TestPrograms = []Program{
 		Description:     "DE? All Addressing Modes",
 		FinalState:      Registers{0x1f, 0x04, 0x84},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x01, []byte{0xa3, 0xa2}, "DEX"},
-			MemoryMatch{0x03, []byte{0x87, 0x84}, "DEY"},
-			MemoryMatch{0x2020, []byte{0xa9, 0x22}, "DEC Absolute"},
-			MemoryMatch{0x05, []byte{0x1d, 0x1e}, "DEC Zero Page"},
+			{0x01, []byte{0xa3, 0xa2}, "DEX"},
+			{0x03, []byte{0x87, 0x84}, "DEY"},
+			{0x2020, []byte{0xa9, 0x22}, "DEC Absolute"},
+			{0x05, []byte{0x1d, 0x1e}, "DEC Zero Page"},
 		},
 	},
 
@@ -75,8 +75,8 @@ var TestPrograms = []Program{
 		Description:     "JMP Absolute and Indirect",
 		FinalState:      Registers{0x22, 0x20, 0x99},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x01, []byte{0x05, 0x20}, "JMP Absolute"},
-			MemoryMatch{0x03, []byte{0x22}, "JMP Indirect"},
+			{0x01, []byte{0x05, 0x20}, "JMP Absolute"},
+			{0x03, []byte{0x22}, "JMP Indirect"},
 		},
 	},
 
@@ -85,11 +85,11 @@ var TestPrograms = []Program{
 		Description:     "Branch",
 		FinalState:      Registers{0xf9, 0xde, 0x8b},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x00, []byte{0x00}, "No error"},
-			MemoryMatch{0x01, []byte{0x28, 0xcd}, "BEQ"},
-			MemoryMatch{0x03, []byte{0x9f, 0x82}, "BNE"},
-			MemoryMatch{0x05, []byte{0xde, 0x8b}, "BPL"},
-			MemoryMatch{0x07, []byte{0xde, 0x8b}, "BMI"},
+			{0x00, []byte{0x00}, "No error"},
+			{0x01, []byte{0x28, 0xcd}, "BEQ"},
+			{0x03, []byte{0x9f, 0x82}, "BNE"},
+			{0x05, []byte{0xde, 0x8b}, "BPL"},
+			{0x07, []byte{0xde, 0x8b}, "BMI"},
 		},
 	},
 
@@ -98,7 +98,7 @@ var TestPrograms = []Program{
 		Description:     "Simple STRCPY",
 		FinalState:      Registers{0x00, 0x12, 0x00},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x3000, []byte("Running a program!"), "Destination"},
+			{0x3000, []byte("Running a program!"), "Destination"},
 		},
 	},
 
@@ -107,10 +107,10 @@ var TestPrograms = []Program{
 		Description:     "AND instructions",
 		FinalState:      Registers{0x81, 0x02, 0x03},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x00, []byte{0x40}, "AND Immediate"},
-			MemoryMatch{0x01, []byte{0x90}, "AND Absolute"},
-			MemoryMatch{0x02, []byte{0x09}, "AND Absolute X"},
-			MemoryMatch{0x03, []byte{0x81}, "AND Absolute Y"},
+			{0x00, []byte{0x40}, "AND Immediate"},
+			{0x01, []byte{0x90}, "AND Absolute"},
+			{0x02, []byte{0x09}, "AND Absolute X"},
+			{0x03, []byte{0x81}, "AND Absolute Y"},
 		},
 	},
 
@@ -133,11 +133,11 @@ var TestPrograms = []Program{
 		Description:     "Carry flag instructions",
 		FinalState:      Registers{0x27, 0x00, 0x00},
 		FinalMemory: []MemoryMatch{
-			MemoryMatch{0x00, []byte{0x00}, "No error"},
-			MemoryMatch{0x01, []byte{0xaa}, "BCC"},
-			MemoryMatch{0x02, []byte{0xed}, "SEC"},
-			MemoryMatch{0x03, []byte{0x86}, "BCS"},
-			MemoryMatch{0x04, []byte{0x27}, "CLC"},
+			{0x00, []byte{0x00}, "No error"},
+			{0x01, []byte{0xaa}, "BCC"},
+			{0x02, []byte{0xed}, "SEC"},
+			{0x03, []byte{0x86}, "BCS"},
+			{0x04, []byte{0x27}, "CLC"},
 		},
 	},
 

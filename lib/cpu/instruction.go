@@ -77,85 +77,157 @@ func NoAddress(p *Processor) int {
 	return 0
 }
 
+func ImmediateInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   ImmediateAddress,
+		Operation: operation,
+		Length:    2,
+	}
+}
+
+func ZeroPageInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   ZeroPageAddress,
+		Operation: operation,
+		Length:    2,
+	}
+}
+
+func ZeroPageXInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   ZeroPageXAddress,
+		Operation: operation,
+		Length:    2,
+	}
+}
+
+func ZeroPageYInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   ZeroPageYAddress,
+		Operation: operation,
+		Length:    2,
+	}
+}
+
+func AbsoluteInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   AddressOperand,
+		Operation: operation,
+		Length:    3,
+	}
+}
+
+func AbsoluteXInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   AbsoluteXAddress,
+		Operation: operation,
+		Length:    3,
+	}
+}
+
+func AbsoluteYInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   AbsoluteYAddress,
+		Operation: operation,
+		Length:    3,
+	}
+}
+
+func NoOperandInstruction(opcode byte, operation OperationFn) Instruction {
+	return Instruction{
+		Opcode:    opcode,
+		Operand:   NoAddress,
+		Operation: operation,
+		Length:    1,
+	}
+}
+
 // Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
-	0x05: Instruction{0x05, ZeroPageAddress, ORA, 2},
-	0x09: Instruction{0x09, ImmediateAddress, ORA, 2},
-	0x0a: Instruction{0x0a, NoAddress, ASL, 1},
-	0x0d: Instruction{0x0d, AddressOperand, ORA, 3},
+	0x05: ZeroPageInstruction(0x05, ORA),
+	0x09: ImmediateInstruction(0x09, ORA),
+	0x0a: NoOperandInstruction(0x0a, ASL),
+	0x0d: AbsoluteInstruction(0x0d, ORA),
 
-	0x10: Instruction{0x10, ImmediateAddress, BPL, 2},
-	0x15: Instruction{0x15, ZeroPageXAddress, ORA, 2},
-	0x18: Instruction{0x18, NoAddress, CLC, 1},
-	0x19: Instruction{0x19, AbsoluteYAddress, ORA, 3},
-	0x1d: Instruction{0x1d, AbsoluteXAddress, ORA, 3},
+	0x10: ImmediateInstruction(0x10, BPL),
+	0x15: ZeroPageXInstruction(0x15, ORA),
+	0x18: NoOperandInstruction(0x18, CLC),
+	0x19: AbsoluteYInstruction(0x19, ORA),
+	0x1d: AbsoluteXInstruction(0x1d, ORA),
 
-	0x29: Instruction{0x29, ImmediateAddress, AND, 2},
-	0x2a: Instruction{0x2a, NoAddress, ROL, 1},
-	0x2d: Instruction{0x2d, AddressOperand, AND, 3},
+	0x29: ImmediateInstruction(0x29, AND),
+	0x2a: NoOperandInstruction(0x2a, ROL),
+	0x2d: AbsoluteInstruction(0x2d, AND),
 
-	0x30: Instruction{0x30, ImmediateAddress, BMI, 2},
-	0x38: Instruction{0x38, NoAddress, SEC, 1},
-	0x39: Instruction{0x39, AbsoluteYAddress, AND, 3},
-	0x3d: Instruction{0x3d, AbsoluteXAddress, AND, 3},
+	0x30: ImmediateInstruction(0x30, BMI),
+	0x38: NoOperandInstruction(0x38, SEC),
+	0x39: AbsoluteYInstruction(0x39, AND),
+	0x3d: AbsoluteXInstruction(0x3d, AND),
 
-	0x4a: Instruction{0x4a, NoAddress, LSR, 1},
-	0x4c: Instruction{0x4c, AddressOperand, JMP, 3},
+	0x4a: NoOperandInstruction(0x4a, LSR),
+	0x4c: AbsoluteInstruction(0x4c, JMP),
 
-	0x6a: Instruction{0x6a, NoAddress, ROR, 1},
+	0x6a: NoOperandInstruction(0x6a, ROR),
 	0x6c: Instruction{0x6c, IndirectAddress, JMP, 3},
 
-	0x84: Instruction{0x84, ZeroPageAddress, STY, 2},
-	0x85: Instruction{0x85, ZeroPageAddress, STA, 2},
-	0x86: Instruction{0x86, ZeroPageAddress, STX, 2},
-	0x88: Instruction{0x88, NoAddress, DEY, 1},
-	0x8c: Instruction{0x8c, AddressOperand, STY, 3},
-	0x8d: Instruction{0x8d, AddressOperand, STA, 3},
-	0x8e: Instruction{0x8e, AddressOperand, STX, 3},
+	0x84: ZeroPageInstruction(0x84, STY),
+	0x85: ZeroPageInstruction(0x85, STA),
+	0x86: ZeroPageInstruction(0x86, STX),
+	0x88: NoOperandInstruction(0x88, DEY),
+	0x8c: AbsoluteInstruction(0x8c, STY),
+	0x8d: AbsoluteInstruction(0x8d, STA),
+	0x8e: AbsoluteInstruction(0x8e, STX),
 
-	0x90: Instruction{0x90, ImmediateAddress, BCC, 2},
-	0x94: Instruction{0x94, ZeroPageXAddress, STY, 2},
-	0x95: Instruction{0x95, ZeroPageXAddress, STA, 2},
-	0x96: Instruction{0x96, ZeroPageYAddress, STX, 2},
-	0x99: Instruction{0x99, AbsoluteYAddress, STA, 3},
-	0x9d: Instruction{0x9d, AbsoluteXAddress, STA, 3},
+	0x90: ImmediateInstruction(0x90, BCC),
+	0x94: ZeroPageXInstruction(0x94, STY),
+	0x95: ZeroPageXInstruction(0x95, STA),
+	0x96: ZeroPageYInstruction(0x96, STX),
+	0x99: AbsoluteYInstruction(0x99, STA),
+	0x9d: AbsoluteXInstruction(0x9d, STA),
 
-	0xa0: Instruction{0xa0, ImmediateAddress, LDY, 2},
+	0xa0: ImmediateInstruction(0xa0, LDY),
 	0xa1: Instruction{0xa1, IndexedIndirectAddress, LDA, 2},
-	0xa2: Instruction{0xa2, ImmediateAddress, LDX, 2},
-	0xa4: Instruction{0xa4, ZeroPageAddress, LDY, 2},
-	0xa5: Instruction{0xa5, ZeroPageAddress, LDA, 2},
-	0xa6: Instruction{0xa6, ZeroPageAddress, LDX, 2},
-	0xa8: Instruction{0xa8, NoAddress, TAY, 1},
-	0xa9: Instruction{0xa9, ImmediateAddress, LDA, 2},
-	0xaa: Instruction{0xaa, NoAddress, TAX, 1},
-	0xac: Instruction{0xac, AddressOperand, LDY, 3},
-	0xad: Instruction{0xad, AddressOperand, LDA, 3},
-	0xae: Instruction{0xae, AddressOperand, LDX, 3},
+	0xa2: ImmediateInstruction(0xa2, LDX),
+	0xa4: ZeroPageInstruction(0xa4, LDY),
+	0xa5: ZeroPageInstruction(0xa5, LDA),
+	0xa6: ZeroPageInstruction(0xa6, LDX),
+	0xa8: NoOperandInstruction(0xa8, TAY),
+	0xa9: ImmediateInstruction(0xa9, LDA),
+	0xaa: NoOperandInstruction(0xaa, TAX),
+	0xac: AbsoluteInstruction(0xac, LDY),
+	0xad: AbsoluteInstruction(0xad, LDA),
+	0xae: AbsoluteInstruction(0xae, LDX),
 
-	0xb0: Instruction{0xb0, ImmediateAddress, BCS, 2},
-	0xb4: Instruction{0xb4, ZeroPageXAddress, LDY, 2},
-	0xb5: Instruction{0xb5, ZeroPageXAddress, LDA, 2},
-	0xb6: Instruction{0xb6, ZeroPageYAddress, LDX, 2},
-	0xb9: Instruction{0xb9, AbsoluteYAddress, LDA, 3},
-	0xbc: Instruction{0xbc, AbsoluteXAddress, LDY, 3},
-	0xbd: Instruction{0xbd, AbsoluteXAddress, LDA, 3},
-	0xbe: Instruction{0xbe, AbsoluteYAddress, LDX, 3},
+	0xb0: ImmediateInstruction(0xb0, BCS),
+	0xb4: ZeroPageXInstruction(0xb4, LDY),
+	0xb5: ZeroPageXInstruction(0xb5, LDA),
+	0xb6: ZeroPageYInstruction(0xb6, LDX),
+	0xb9: AbsoluteYInstruction(0xb9, LDA),
+	0xbc: AbsoluteXInstruction(0xbc, LDY),
+	0xbd: AbsoluteXInstruction(0xbd, LDA),
+	0xbe: AbsoluteYInstruction(0xbe, LDX),
 
-	0xc6: Instruction{0xc6, ZeroPageAddress, DEC, 2},
-	0xc8: Instruction{0xc8, NoAddress, INY, 1},
-	0xca: Instruction{0xc8, NoAddress, DEX, 1},
-	0xce: Instruction{0xce, AddressOperand, DEC, 3},
+	0xc6: ZeroPageInstruction(0xc6, DEC),
+	0xc8: NoOperandInstruction(0xc8, INY),
+	0xca: NoOperandInstruction(0xc8, DEX),
+	0xce: AbsoluteInstruction(0xce, DEC),
 
-	0xd0: Instruction{0xd0, ImmediateAddress, BNE, 2},
-	0xd6: Instruction{0xd6, ZeroPageXAddress, DEC, 2},
-	0xde: Instruction{0xde, AbsoluteXAddress, DEC, 3},
+	0xd0: ImmediateInstruction(0xd0, BNE),
+	0xd6: ZeroPageXInstruction(0xd6, DEC),
+	0xde: AbsoluteXInstruction(0xde, DEC),
 
-	0xe6: Instruction{0xe6, ZeroPageAddress, INC, 2},
-	0xe8: Instruction{0xe8, NoAddress, INX, 1},
-	0xee: Instruction{0xee, AddressOperand, INC, 3},
+	0xe6: ZeroPageInstruction(0xe6, INC),
+	0xe8: NoOperandInstruction(0xe8, INX),
+	0xee: AbsoluteInstruction(0xee, INC),
 
-	0xf0: Instruction{0xf0, ImmediateAddress, BEQ, 2},
-	0xf6: Instruction{0xf6, ZeroPageXAddress, INC, 2},
-	0xfe: Instruction{0xfe, AbsoluteXAddress, INC, 3},
+	0xf0: ImmediateInstruction(0xf0, BEQ),
+	0xf6: ZeroPageXInstruction(0xf6, INC),
+	0xfe: AbsoluteXInstruction(0xfe, INC),
 }

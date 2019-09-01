@@ -1,13 +1,13 @@
 ;;; ASL
         lda #$8f
         ldx #$ff
-        asl
+        asl a
         bcc error
         sta $01                 ; Expect $1e
 
 ;;; LSR
         lda #$f2
-        lsr
+        lsr a
         bcs error
         sta $02                 ; Expect $79
 

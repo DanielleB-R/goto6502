@@ -3,3 +3,4 @@
         ldy #$22
         tax
         tay
+        nop

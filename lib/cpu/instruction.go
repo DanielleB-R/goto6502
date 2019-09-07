@@ -225,6 +225,7 @@ var Ops6502 = map[byte]Instruction{
 
 	0xe6: ZeroPageInstruction(0xe6, INC),
 	0xe8: NoOperandInstruction(0xe8, INX),
+	0xea: NoOperandInstruction(0xea, NOP),
 	0xee: AbsoluteInstruction(0xee, INC),
 
 	0xf0: ImmediateInstruction(0xf0, BEQ),

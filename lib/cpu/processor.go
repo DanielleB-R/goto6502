@@ -156,6 +156,9 @@ func LSR(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
+func NOP(p *Processor, addr int) {
+}
+
 func ORA(p *Processor, addr int) {
 	p.A |= p.Memory.Read(addr)
 	p.f.SetZ(p.A)

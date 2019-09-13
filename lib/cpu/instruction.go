@@ -41,11 +41,11 @@ func ZeroPageAddress(p *Processor) int {
 }
 
 func ZeroPageXAddress(p *Processor) int {
-	return int(ImmediateOperand(p) + p.X)
+	return int(ImmediateOperand(p)+p.X) & 0xff
 }
 
 func ZeroPageYAddress(p *Processor) int {
-	return int(ImmediateOperand(p) + p.Y)
+	return int(ImmediateOperand(p)+p.Y) & 0xff
 }
 
 func AddressOperand(p *Processor) int {
@@ -53,11 +53,11 @@ func AddressOperand(p *Processor) int {
 }
 
 func AbsoluteXAddress(p *Processor) int {
-	return AddressOperand(p) + int(p.X)
+	return (AddressOperand(p) + int(p.X)) & 0xffff
 }
 
 func AbsoluteYAddress(p *Processor) int {
-	return AddressOperand(p) + int(p.Y)
+	return (AddressOperand(p) + int(p.Y)) & 0xffff
 }
 
 func IndirectAddress(p *Processor) int {

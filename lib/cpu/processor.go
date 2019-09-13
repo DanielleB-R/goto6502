@@ -12,6 +12,7 @@ type Processor struct {
 	A      byte
 	X      byte
 	Y      byte
+	S      byte
 	f      Flags
 	PC     int
 	Memory memory.Memory
@@ -20,6 +21,7 @@ type Processor struct {
 
 func NewProcessor(initialPC int, rom io.Reader) Processor {
 	return Processor{
+		S:      0xff,
 		PC:     initialPC,
 		Memory: memory.NewMemoryMap(rom),
 	}
@@ -28,6 +30,10 @@ func NewProcessor(initialPC int, rom io.Reader) Processor {
 func (p *Processor) branch(addr int) {
 	offset := asSigned(p.Memory.Read(addr))
 	p.PC += int(offset)
+}
+
+func (p *Processor) stackAddr() int {
+	return 0x0100 | int(p.S)
 }
 
 func AND(p *Processor, addr int) {
@@ -165,6 +171,18 @@ func ORA(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
+func PHA(p *Processor, addr int) {
+	p.Memory.Write(p.stackAddr(), p.A)
+	p.S--
+}
+
+func PLA(p *Processor, addr int) {
+	p.S++
+	p.A = p.Memory.Read(p.stackAddr())
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+}
+
 func ROL(p *Processor, addr int) {
 	var carry byte
 	if p.f.C {
@@ -215,6 +233,16 @@ func TAY(p *Processor, addr int) {
 	p.Y = p.A
 	p.f.SetZ(p.Y)
 	p.f.SetN(p.Y)
+}
+
+func TSX(p *Processor, addr int) {
+	p.X = p.S
+	p.f.SetZ(p.X)
+	p.f.SetN(p.X)
+}
+
+func TXS(p *Processor, addr int) {
+	p.S = p.X
 }
 
 func (p *Processor) Emulate() error {

@@ -153,4 +153,15 @@ var TestPrograms = []Program{
 			{0x05, []byte{0x40, 0xa0}, "ROR"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-stack.bin",
+		Description:     "Stack instructions",
+		FinalState:      Registers{0x0e, 0xff, 0x00},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0x20}, "Set stack pointer"},
+			{0x011f, []byte{0x8f, 0xec}, "Push accumulator to stack"},
+			{0x01, []byte{0xa6, 0x0e}, "Pull accumulator from stack"},
+		},
+	},
 }

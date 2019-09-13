@@ -241,8 +241,20 @@ func TSX(p *Processor, addr int) {
 	p.f.SetN(p.X)
 }
 
+func TXA(p *Processor, addr int) {
+	p.A = p.X
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+}
+
 func TXS(p *Processor, addr int) {
 	p.S = p.X
+}
+
+func TYA(p *Processor, addr int) {
+	p.A = p.Y
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
 }
 
 func (p *Processor) Emulate() error {

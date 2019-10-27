@@ -18,21 +18,24 @@
 
 ;;; DEC Absolute
         addr = $2020
+        ind = $01
         lda #$ab
         sta addr
         dec addr
         dec addr               ; Expect $a9
         lda #$24
-        sta addr+1
-        ldx #$01
+        sta addr+ind
+        ldx #ind
         dec addr,X
         dec addr,X             ; Expect $22
 
 ;;; DEC Zero Page
+        zp = $05
+        zind = $04
         lda #$1f
-        sta $05
-        dec $05
-        dec $05                 ; Expect $1d
-        ldx #$04
+        sta zp
+        dec zp
+        dec zp                 ; Expect $1d
+        ldx #zind
         sta $06
-        dec $02,X               ; Expect $1e
+        dec $06-zind,X         ; Expect $1e

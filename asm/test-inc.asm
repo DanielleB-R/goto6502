@@ -17,21 +17,25 @@
         sty $04                 ; Expect $8c
 
 ;;; INC Absolute
+        addr = $2020
+        index = $01
         lda #$ab
-        sta $2020
-        inc $2020
-        inc $2020               ; Expect $ad
+        sta addr
+        inc addr
+        inc addr                ; Expect $ad
         lda #$24
-        sta $2021
-        ldx #$01
-        inc $2020,X
-        inc $2020,X             ; Expect $26
+        sta addr + index
+        ldx #index
+        inc addr,X
+        inc addr,X             ; Expect $26
 
 ;;; INC Zero Page
+        zp = $05
+        ind = $04
         lda #$1f
-        sta $05
-        inc $05
-        inc $05                 ; Expect $21
-        ldx #$04
+        sta zp
+        inc zp
+        inc zp                  ; Expect $21
+        ldx #ind
         sta $06
-        inc $02,X               ; Expect $20
+        inc $06-ind,X               ; Expect $20

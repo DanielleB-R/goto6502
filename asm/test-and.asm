@@ -1,3 +1,4 @@
+        .include "macros.asm"
 ;;; AND immediate
         lda #$f0
         ldx #$00
@@ -6,53 +7,62 @@
         sta $00                 ; Expect $40
 
 ;;; AND absolute
+        abs = $5000
         lda #$f0
         ldx #$99
-        stx $5000
-        and $5000
+        stx abs
+        and abs
         sta $01                 ; Expect $90
 
 ;;; AND absolute,X
+        xa = $02
         lda #$0f
-        ldx #$02
-        and $4ffe,X
+        ldx #xa
+        and abs-xa,X
         sta $02                 ; Expect $09
 
 ;;; AND absolute,Y
+        ya = $03
         lda #$85
-        ldy #$03
-        and $4ffd,Y
+        ldy #ya
+        and abs-ya,Y
         sta $03                 ; Expect $81
 
 ;;; AND indexed indirect,X
-        lda #$00
-        sta $c1
-        lda #$40
-        sta $c2
+        iiadr = $4000
+        iiloc = $c1
+        xii = $11
+
+        staddr iiadr, iiloc
         lda #$f1
-        sta $4000
+        sta iiadr
         lda #$c5
-        ldx #$11
-        and ($b0,X)
+        ldx #xii
+        and (iiloc-xii,X)
         sta $04                 ; Expect $c1
 
 ;;; AND indirect indexed,Y
+        yii = $15
+
         lda #$dd
-        sta $4015
-        ldy #$15
+        sta iiadr+yii
+        ldy #yii
         lda #$bb
-        and ($c1),Y
+        and (iiloc),Y
         sta $05                 ; Expect $99
 
 ;;; AND zero page
+        zp = $cc
+
         ldx #$11
-        stx $cc
+        stx zp
         lda #$c9
-        and $cc
+        and zp
         sta $06                 ; Expect $01
 
 ;;; AND zero page,X
+        zpx = $c
         lda #$d6
-        ldx #$0c
-        and $c0,X
+        ldx #zpx
+        and zp-zpx,X
         sta $07                 ; Expect $10

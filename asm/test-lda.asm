@@ -24,8 +24,8 @@
         lda #$01
         ldx #$02
         ldy #$00
-        lda $1000,X
-        ldy $0ffe,X
+        lda $1002-$02,X
+        ldy $1000-$02,X
         sta $06                 ; Expect $a2
         sty $07                 ; Expect $a9
 
@@ -33,8 +33,8 @@
         lda #$01
         ldx #$00
         ldy #$02
-        lda $1002,Y
-        ldx $1000,Y
+        lda $1004-$02,Y
+        ldx $1002-$02,Y
         sta $08                 ; Expect $a0
         stx $09                 ; Expect $a2
 

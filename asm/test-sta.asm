@@ -25,3 +25,12 @@
         ldy #$22
         ldx #$ef
         stx $11,Y               ; Expect $ef at $0033
+
+;;; Store indexed indirect
+        lda #$00
+        sta $92
+        lda #$35
+        sta $91
+        lda #$ce
+        ldx #$01
+        sta ($90,X)             ; Expect $ce at $0035

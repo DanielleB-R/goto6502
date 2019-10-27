@@ -36,13 +36,14 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-sta.bin",
 		Description:     "ST? All Addressing Modes",
-		FinalState:      Registers{0x80, 0xef, 0x22},
+		FinalState:      Registers{0xce, 0x01, 0x22},
 		FinalMemory: []MemoryMatch{
 			{0x2000, []byte{0x22, 0x55, 0xbb}, "Absolute"},
 			{0x2010, []byte{0x22}, "Absolute, X"},
 			{0x2020, []byte{0x22}, "Absolute, Y"},
 			{0x30, []byte{0x80, 0x75}, "Zero Page, X"},
 			{0x33, []byte{0xef}, "Zero Page, Y"},
+			{0x35, []byte{0xce}, "Indexed Indirect, X"},
 		},
 	},
 

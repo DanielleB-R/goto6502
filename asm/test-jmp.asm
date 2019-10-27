@@ -1,3 +1,4 @@
+        .include "macros.asm"
         .org $1000
 ;;; Absolute jump
         lda #$05
@@ -11,10 +12,8 @@ over:   sta $01                 ; Expect $05
 
 ;;; Indirect jump
         dest = $bb00
-        lda #<target
-        sta dest
-        lda #>target
-        sta dest+1
+
+        staddr target,dest
         jmp (dest)
         lda #$f3
         jmp save

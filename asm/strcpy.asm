@@ -1,5 +1,6 @@
 ;;; STRCPY implementation, with hard-coded src and dest
         dest=$3000
+
         ldx #$00
 loop:   lda src,X
         sta dest,X

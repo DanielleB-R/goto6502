@@ -9,14 +9,14 @@
 ;;; ORA absolute
         addr = $5000
 
+        place $99, addr
         lda #$f0
-        ldx #$99
-        stx addr
         ora addr
         sta $01                 ; Expect $f9
 
 ;;; ORA absolute,X
         absx = $02
+
         lda #$0f
         ldx #absx
         ora addr-absx,X
@@ -24,6 +24,7 @@
 
 ;;; ORA absolute,Y
         absy = $03
+
         lda #$85
         ldy #absy
         ora addr-absy,Y
@@ -31,14 +32,15 @@
 
 ;;; ORA zero page
         zp = $cc
-        ldx #$11
-        stx zp
+
+        xplace $11,zp
         lda #$c8
         ora zp
         sta $04                 ; Expect $d9
 
 ;;; ORA zero page,X
         zpx = $0c
+
         lda #$00
         ldx #zpx
         ora zp-zpx,X
@@ -50,8 +52,7 @@
         xii = $11
 
         staddr iiaddr,iiloc
-        lda #$f1
-        sta iiaddr
+        place $f1,iiaddr
         lda #$c5
         ldx #xii
         ora (iiloc-xii,X)
@@ -59,8 +60,8 @@
 
 ;;; ORA indirect indexed,Y
         yii = $15
-        lda #$88
-        sta iiaddr + yii
+
+        place $88,iiaddr+yii
         ldy #yii
         lda #$55
         ora (iiloc),Y

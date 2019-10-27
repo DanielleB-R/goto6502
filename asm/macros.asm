@@ -9,3 +9,13 @@
         lda #val
         sta addr
         .endmacro
+
+        .macro xplace val,addr
+        ldx #val
+        stx addr
+        .endmacro
+
+        .macro yplace val,addr
+        ldy #val
+        sty addr
+        .endmacro

@@ -1,3 +1,4 @@
+        .include "macros.asm"
 ;;; Store absolute
         lda #$22
         ldx #$55
@@ -27,15 +28,16 @@
         stx $11,Y               ; Expect $ef at $0033
 
 ;;; Store indexed indirect
-        lda #$00
-        sta $92
-        lda #$35
-        sta $91
+        iiaddr = $0035
+        iiloc = $91
+        xii = $01
+
+        staddr iiaddr,iiloc
         lda #$ce
-        ldx #$01
-        sta ($90,X)             ; Expect $ce at $0035
+        ldx #xii
+        sta (iiloc-xii,X)             ; Expect $ce at $0035
 
 ;;; Store indirect indexed
         lda #$dd
         ldy #$03
-        sta ($91),Y             ; Expect $dd at $0038
+        sta (iiloc),Y             ; Expect $dd at $0038

@@ -8,14 +8,15 @@
 
 ;;; AND absolute
         abs = $5000
+
+        place $99, abs
         lda #$f0
-        ldx #$99
-        stx abs
         and abs
         sta $01                 ; Expect $90
 
 ;;; AND absolute,X
         xa = $02
+
         lda #$0f
         ldx #xa
         and abs-xa,X
@@ -23,6 +24,7 @@
 
 ;;; AND absolute,Y
         ya = $03
+
         lda #$85
         ldy #ya
         and abs-ya,Y
@@ -34,8 +36,7 @@
         xii = $11
 
         staddr iiadr, iiloc
-        lda #$f1
-        sta iiadr
+        place $f1, iiadr
         lda #$c5
         ldx #xii
         and (iiloc-xii,X)
@@ -44,8 +45,7 @@
 ;;; AND indirect indexed,Y
         yii = $15
 
-        lda #$dd
-        sta iiadr+yii
+        place $dd, iiadr+yii
         ldy #yii
         lda #$bb
         and (iiloc),Y
@@ -54,8 +54,7 @@
 ;;; AND zero page
         zp = $cc
 
-        ldx #$11
-        stx zp
+        xplace $11,zp
         lda #$c9
         and zp
         sta $06                 ; Expect $01

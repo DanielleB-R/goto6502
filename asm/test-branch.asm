@@ -45,9 +45,9 @@ plus:   stx $05                 ; Expect $de
         ldy #$ff
 minus:  stx $07                 ; Expect $de
         sty $08                 ; Expect $8b
-        brk
 
 ;;;
 
+        brk
 error:  lda #$99
         sta $00

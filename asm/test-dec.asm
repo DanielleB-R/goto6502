@@ -1,4 +1,4 @@
-        lda #$00
+        .include "macros.asm"
 ;;; Decrement X index
         ldx #$a5
         dex
@@ -19,12 +19,11 @@
 ;;; DEC Absolute
         addr = $2020
         ind = $01
-        lda #$ab
-        sta addr
+
+        place $ab, addr
         dec addr
         dec addr               ; Expect $a9
-        lda #$24
-        sta addr+ind
+        place $24, addr+ind
         ldx #ind
         dec addr,X
         dec addr,X             ; Expect $22
@@ -32,8 +31,8 @@
 ;;; DEC Zero Page
         zp = $05
         zind = $04
-        lda #$1f
-        sta zp
+
+        place $1f, zp
         dec zp
         dec zp                 ; Expect $1d
         ldx #zind

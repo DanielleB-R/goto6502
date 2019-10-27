@@ -119,6 +119,14 @@ func CLV(p *Processor, addr int) {
 	p.f.V = false
 }
 
+func CMP(p *Processor, addr int) {
+	mem := p.Memory.Read(addr)
+	diff := int(p.A) - int(mem)
+	p.f.N = diff < 0
+	p.f.Z = diff == 0
+	p.f.C = diff >= 0
+}
+
 func DEC(p *Processor, addr int) {
 	n := p.Memory.Read(addr)
 	n--

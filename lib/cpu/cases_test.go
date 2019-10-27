@@ -219,4 +219,21 @@ var TestPrograms = []Program{
 			{0x03, []byte{0xd4}, "CLV"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-cmp.bin",
+		Description:     "CMP instructions",
+		FinalState:      Registers{0x99, 0x23, 0x11},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0x00}, "No error"},
+			{0x01, []byte{0x90, 0x7d, 0x5a}, "CMP immediate"},
+			{0x04, []byte{0xa6}, "CMP absolute"},
+			{0x05, []byte{0xbb}, "CMP absolute,X"},
+			{0x06, []byte{0xda}, "CMP absolute,Y"},
+			{0x07, []byte{0x9e}, "CMP zero page"},
+			{0x08, []byte{0x02}, "CMP zero page,X"},
+			{0x09, []byte{0xe8}, "CMP indexed indirect"},
+			{0x0a, []byte{0x23}, "CMP indirect indexed"},
+		},
+	},
 }

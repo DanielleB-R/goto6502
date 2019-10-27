@@ -138,6 +138,22 @@ var TestPrograms = []Program{
 	},
 
 	Program{
+		MachineCodeFile: "../../asm/test-eor.bin",
+		Description:     "EOR instructions",
+		FinalState:      Registers{0x22, 0x11, 0x15},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0xb4}, "EOR Immediate"},
+			{0x01, []byte{0x69}, "EOR Absolute"},
+			{0x02, []byte{0x96}, "EOR Absolute X"},
+			{0x03, []byte{0x1c}, "EOR Absolute Y"},
+			{0x04, []byte{0xca}, "EOR Zero Page"},
+			{0x05, []byte{0x68}, "EOR Zero Page X"},
+			{0x06, []byte{0x34}, "EOR Indexed Indirect"},
+			{0x07, []byte{0x22}, "EOR Indirect Indexed"},
+		},
+	},
+
+	Program{
 		MachineCodeFile: "../../asm/test-carry.bin",
 		Description:     "Carry flag instructions",
 		FinalState:      Registers{0x27, 0x00, 0x00},

@@ -109,6 +109,13 @@ func DEY(p *Processor, addr int) {
 	p.f.SetN(p.Y)
 }
 
+func EOR(p *Processor, addr int) {
+	p.A ^= p.Memory.Read(addr)
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+
+}
+
 func INC(p *Processor, addr int) {
 	n := p.Memory.Read(addr)
 	n++

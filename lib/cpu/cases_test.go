@@ -207,4 +207,16 @@ var TestPrograms = []Program{
 			{0x08, []byte{0xe3}, "ADC indirect indexed"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-overflow.bin",
+		Description:     "Overflow flag",
+		FinalState:      Registers{0xd4, 0x00, 0x00},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0x00}, "No error"},
+			{0x01, []byte{0x24}, "BVS"},
+			{0x02, []byte{0x8e}, "BVC"},
+			{0x03, []byte{0xd4}, "CLV"},
+		},
+	},
 }

@@ -99,8 +99,24 @@ func BPL(p *Processor, addr int) {
 	}
 }
 
+func BVC(p *Processor, addr int) {
+	if !p.f.V {
+		p.branch(addr)
+	}
+}
+
+func BVS(p *Processor, addr int) {
+	if p.f.V {
+		p.branch(addr)
+	}
+}
+
 func CLC(p *Processor, addr int) {
 	p.f.C = false
+}
+
+func CLV(p *Processor, addr int) {
+	p.f.V = false
 }
 
 func DEC(p *Processor, addr int) {

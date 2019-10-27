@@ -185,6 +185,7 @@ var Ops6502 = map[byte]Instruction{
 	0x4d: AbsoluteInstruction(0x4d, EOR),
 	0x4c: AbsoluteInstruction(0x4c, JMP),
 
+	0x50: ImmediateInstruction(0x50, BVC),
 	0x51: Instruction{0x51, IndirectIndexedAddress, EOR, 2},
 	0x55: ZeroPageXInstruction(0x55, EOR),
 	0x59: AbsoluteYInstruction(0x59, EOR),
@@ -198,6 +199,7 @@ var Ops6502 = map[byte]Instruction{
 	0x6c: Instruction{0x6c, IndirectAddress, JMP, 3},
 	0x6d: AbsoluteInstruction(0x6d, ADC),
 
+	0x70: ImmediateInstruction(0x70, BVS),
 	0x71: Instruction{0x71, IndirectIndexedAddress, ADC, 2},
 	0x75: ZeroPageXInstruction(0x76, ADC),
 	0x79: AbsoluteYInstruction(0x7d, ADC),
@@ -241,6 +243,7 @@ var Ops6502 = map[byte]Instruction{
 	0xb4: ZeroPageXInstruction(0xb4, LDY),
 	0xb5: ZeroPageXInstruction(0xb5, LDA),
 	0xb6: ZeroPageYInstruction(0xb6, LDX),
+	0xb8: NoOperandInstruction(0xb8, CLV),
 	0xb9: AbsoluteYInstruction(0xb9, LDA),
 	0xba: NoOperandInstruction(0xba, TSX),
 	0xbc: AbsoluteXInstruction(0xbc, LDY),

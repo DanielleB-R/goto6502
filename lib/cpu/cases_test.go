@@ -21,7 +21,7 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-lda.bin",
 		Description:     "LD? All Addressing Modes",
-		FinalState:      Registers{0xa9, 0x01, 0x11},
+		FinalState:      Registers{0xa2, 0x01, 0x02},
 		FinalMemory: []MemoryMatch{
 			{0x00, []byte{0x22, 0x01, 0x10}, "Zero Page"},
 			{0x03, []byte{0xa9, 0xa2, 0xa0}, "Absolute"},
@@ -30,13 +30,14 @@ var TestPrograms = []Program{
 			{0x0a, []byte{0x10, 0x01}, "Zero Page, X"},
 			{0x0c, []byte{0x01}, "Zero Page, Y"},
 			{0x0d, []byte{0xa9}, "Indexed Indirect, X"},
+			{0x0e, []byte{0xa2}, "Indirect Indexed, Y"},
 		},
 	},
 
 	Program{
 		MachineCodeFile: "../../asm/test-sta.bin",
 		Description:     "ST? All Addressing Modes",
-		FinalState:      Registers{0xce, 0x01, 0x22},
+		FinalState:      Registers{0xdd, 0x01, 0x03},
 		FinalMemory: []MemoryMatch{
 			{0x2000, []byte{0x22, 0x55, 0xbb}, "Absolute"},
 			{0x2010, []byte{0x22}, "Absolute, X"},
@@ -44,6 +45,7 @@ var TestPrograms = []Program{
 			{0x30, []byte{0x80, 0x75}, "Zero Page, X"},
 			{0x33, []byte{0xef}, "Zero Page, Y"},
 			{0x35, []byte{0xce}, "Indexed Indirect, X"},
+			{0x38, []byte{0xdd}, "Indirect Indexed, Y"},
 		},
 	},
 

@@ -58,3 +58,8 @@
         sta $82
         lda ($80,X)
         sta $0d                 ; Expect $a9
+
+;;; Load indirect indexed
+        ldy #$02
+        lda ($81),Y
+        sta $0e                 ; Expect $a2

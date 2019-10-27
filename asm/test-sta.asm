@@ -34,3 +34,8 @@
         lda #$ce
         ldx #$01
         sta ($90,X)             ; Expect $ce at $0035
+
+;;; Store indirect indexed
+        lda #$dd
+        ldy #$03
+        sta ($91),Y             ; Expect $dd at $0038

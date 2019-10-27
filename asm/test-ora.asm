@@ -36,3 +36,23 @@
         ldx #$0c
         ora $c0,X
         sta $05                 ; Expect $11
+
+;;; ORA indexed indirect,X
+        lda #$00
+        sta $c1
+        lda #$40
+        sta $c2
+        lda #$f1
+        sta $4000
+        lda #$c5
+        ldx #$11
+        ora ($b0,X)
+        sta $06                 ; Expect $f5
+
+;;; ORA indirect indexed,Y
+        lda #$88
+        sta $4015
+        ldy #$15
+        lda #$55
+        ora ($c1),Y
+        sta $07                 ; Expect $dd

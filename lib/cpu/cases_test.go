@@ -108,7 +108,7 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-and.bin",
 		Description:     "AND instructions",
-		FinalState:      Registers{0x99, 0x11, 0x15},
+		FinalState:      Registers{0x10, 0x0c, 0x15},
 		FinalMemory: []MemoryMatch{
 			{0x00, []byte{0x40}, "AND Immediate"},
 			{0x01, []byte{0x90}, "AND Absolute"},
@@ -116,13 +116,15 @@ var TestPrograms = []Program{
 			{0x03, []byte{0x81}, "AND Absolute Y"},
 			{0x04, []byte{0xc1}, "AND Indexed Indirect"},
 			{0x05, []byte{0x99}, "AND Indirect Indexed"},
+			{0x06, []byte{0x01}, "AND Zero Page"},
+			{0x07, []byte{0x10}, "AND Zero Page"},
 		},
 	},
 
 	Program{
 		MachineCodeFile: "../../asm/test-ora.bin",
 		Description:     "ORA instructions",
-		FinalState:      Registers{0x11, 0x0c, 0x03},
+		FinalState:      Registers{0xdd, 0x11, 0x15},
 		FinalMemory: []MemoryMatch{
 			{0x00, []byte{0xf4}, "ORA Immediate"},
 			{0x01, []byte{0xf9}, "ORA Absolute"},
@@ -130,6 +132,8 @@ var TestPrograms = []Program{
 			{0x03, []byte{0x9d}, "ORA Absolute Y"},
 			{0x04, []byte{0xd9}, "ORA Zero Page"},
 			{0x05, []byte{0x11}, "ORA Zero Page X"},
+			{0x06, []byte{0xf5}, "ORA Indexed Indirect"},
+			{0x07, []byte{0xdd}, "ORA Indirect Indexed"},
 		},
 	},
 

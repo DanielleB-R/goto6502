@@ -43,3 +43,16 @@
         lda #$bb
         and ($c1),Y
         sta $05                 ; Expect $99
+
+;;; AND zero page
+        ldx #$11
+        stx $cc
+        lda #$c9
+        and $cc
+        sta $06                 ; Expect $01
+
+;;; AND zero page,X
+        lda #$d6
+        ldx #$0c
+        and $c0,X
+        sta $07                 ; Expect $10

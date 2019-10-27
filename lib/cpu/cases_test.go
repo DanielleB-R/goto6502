@@ -190,4 +190,21 @@ var TestPrograms = []Program{
 			{0x03, []byte{0xce, 0x93}, "TXA and TYA"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-adc.bin",
+		Description:     "ADC instruction",
+		FinalState:      Registers{0xe3, 0x08, 0x96},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0x00}, "No error"},
+			{0x01, []byte{0xaf}, "ADC Immediate"},
+			{0x02, []byte{0x55}, "ADC Absolute"},
+			{0x03, []byte{0x4b}, "ADC Absolute,X"},
+			{0x04, []byte{0x80}, "ADC Absolute,Y"},
+			{0x05, []byte{0xca}, "ADC Zero Page"},
+			{0x06, []byte{0x2e}, "ADC Zero Page,X"},
+			{0x07, []byte{0xad}, "ADC indexed indirect"},
+			{0x08, []byte{0xe3}, "ADC indirect indexed"},
+		},
+	},
 }

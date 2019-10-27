@@ -36,6 +36,20 @@ func (p *Processor) stackAddr() int {
 	return 0x0100 | int(p.S)
 }
 
+func ADC(p *Processor, addr int) {
+	oldA := p.A
+	var carry int
+	if p.f.C {
+		carry = 0x01
+	}
+	sum := int(p.A) + int(p.Memory.Read(addr)) + carry
+	p.A = byte(sum & 0xff)
+	p.f.C = sum > 0xff
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+	p.f.SetV(p.A, oldA)
+}
+
 func AND(p *Processor, addr int) {
 	p.A &= p.Memory.Read(addr)
 	p.f.SetZ(p.A)

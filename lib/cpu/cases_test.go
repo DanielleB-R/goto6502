@@ -2,7 +2,7 @@ package cpu
 
 var TestPrograms = []Program{
 	Program{
-		MachineCodeFile: "../../asm/test1.bin",
+		MachineCodeFile: "../../asm/load-immediate.bin",
 		Description:     "LD? Immediate",
 		FinalState:      Registers{0x01, 0x10, 0x22},
 	},

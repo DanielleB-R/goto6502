@@ -162,11 +162,13 @@ var Ops6502 = map[byte]Instruction{
 	0x19: AbsoluteYInstruction(0x19, ORA),
 	0x1d: AbsoluteXInstruction(0x1d, ORA),
 
+	0x21: Instruction{0x21, IndexedIndirectAddress, AND, 2},
 	0x29: ImmediateInstruction(0x29, AND),
 	0x2a: NoOperandInstruction(0x2a, ROL),
 	0x2d: AbsoluteInstruction(0x2d, AND),
 
 	0x30: ImmediateInstruction(0x30, BMI),
+	0x31: Instruction{0x31, IndirectIndexedAddress, AND, 2},
 	0x38: NoOperandInstruction(0x38, SEC),
 	0x39: AbsoluteYInstruction(0x39, AND),
 	0x3d: AbsoluteXInstruction(0x3d, AND),

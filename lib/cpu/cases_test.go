@@ -108,12 +108,14 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-and.bin",
 		Description:     "AND instructions",
-		FinalState:      Registers{0x81, 0x02, 0x03},
+		FinalState:      Registers{0x99, 0x11, 0x15},
 		FinalMemory: []MemoryMatch{
 			{0x00, []byte{0x40}, "AND Immediate"},
 			{0x01, []byte{0x90}, "AND Absolute"},
 			{0x02, []byte{0x09}, "AND Absolute X"},
 			{0x03, []byte{0x81}, "AND Absolute Y"},
+			{0x04, []byte{0xc1}, "AND Indexed Indirect"},
+			{0x05, []byte{0x99}, "AND Indirect Indexed"},
 		},
 	},
 

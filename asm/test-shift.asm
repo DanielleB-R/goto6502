@@ -11,23 +11,23 @@
         bcs error
         sta $02                 ; Expect $79
 
-;;; ROL
+;;; ROL A
         clc
         lda #$81
-        rol
+        rol A
         bcc error
         sta $03                 ; Expect $02
-        rol
+        rol A
         bcs error
         sta $04                 ; Expect $05
 
-;;; ROR
+;;; ROR A
         clc
         lda #$81
-        ror
+        ror A
         bcc error
         sta $05                 ; Expect $40
-        ror
+        ror A
         bcs error
         sta $06                 ; Expect $a0
         brk

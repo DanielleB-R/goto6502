@@ -23,3 +23,23 @@
         ldy #$03
         and $4ffd,Y
         sta $03                 ; Expect $81
+
+;;; AND indexed indirect,X
+        lda #$00
+        sta $c1
+        lda #$40
+        sta $c2
+        lda #$f1
+        sta $4000
+        lda #$c5
+        ldx #$11
+        and ($b0,X)
+        sta $04                 ; Expect $c1
+
+;;; AND indirect indexed,Y
+        lda #$dd
+        sta $4015
+        ldy #$15
+        lda #$bb
+        and ($c1),Y
+        sta $05                 ; Expect $99

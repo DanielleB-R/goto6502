@@ -30,7 +30,7 @@
         ror A
         bcs error
         sta $06                 ; Expect $a0
-        brk
 
+        brk
 error:  lda #$99
         sta $00

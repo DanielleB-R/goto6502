@@ -1,3 +1,4 @@
+        .include "macros.asm"
 ;;;  Going to assume we start with C = 0
 ;;;  Not my favourite
 

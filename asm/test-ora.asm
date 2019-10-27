@@ -1,3 +1,4 @@
+        .include "macros.asm"
 ;;; ORA immediate
         lda #$f0
         ldx #$00
@@ -6,53 +7,61 @@
         sta $00                 ; Expect $f4
 
 ;;; ORA absolute
+        addr = $5000
+
         lda #$f0
         ldx #$99
-        stx $5000
-        ora $5000
+        stx addr
+        ora addr
         sta $01                 ; Expect $f9
 
 ;;; ORA absolute,X
+        absx = $02
         lda #$0f
-        ldx #$02
-        ora $4ffe,X
+        ldx #absx
+        ora addr-absx,X
         sta $02                 ; Expect $9f
 
 ;;; ORA absolute,Y
+        absy = $03
         lda #$85
-        ldy #$03
-        ora $4ffd,Y
+        ldy #absy
+        ora addr-absy,Y
         sta $03                 ; Expect $9d
 
 ;;; ORA zero page
+        zp = $cc
         ldx #$11
-        stx $cc
+        stx zp
         lda #$c8
-        ora $cc
+        ora zp
         sta $04                 ; Expect $d9
 
 ;;; ORA zero page,X
+        zpx = $0c
         lda #$00
-        ldx #$0c
-        ora $c0,X
+        ldx #zpx
+        ora zp-zpx,X
         sta $05                 ; Expect $11
 
 ;;; ORA indexed indirect,X
-        lda #$00
-        sta $c1
-        lda #$40
-        sta $c2
+        iiaddr = $4000
+        iiloc = $c1
+        xii = $11
+
+        staddr iiaddr,iiloc
         lda #$f1
-        sta $4000
+        sta iiaddr
         lda #$c5
-        ldx #$11
-        ora ($b0,X)
+        ldx #xii
+        ora (iiloc-xii,X)
         sta $06                 ; Expect $f5
 
 ;;; ORA indirect indexed,Y
+        yii = $15
         lda #$88
-        sta $4015
-        ldy #$15
+        sta iiaddr + yii
+        ldy #yii
         lda #$55
-        ora ($c1),Y
+        ora (iiloc),Y
         sta $07                 ; Expect $dd

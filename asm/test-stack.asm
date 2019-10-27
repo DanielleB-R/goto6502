@@ -1,3 +1,4 @@
+        .include "macros.asm"
 ;;; Setting the stack pointer
         ldx #$20
         txs

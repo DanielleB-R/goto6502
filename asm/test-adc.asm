@@ -1,3 +1,4 @@
+        .include "macros.asm"
 ;;; ADC immediate
         clc
         lda #$22
@@ -8,61 +9,70 @@
         sta $01                 ; Expect $af
 
 ;;; ADC absolute
-        ldx #$88
-        stx $4000
+        addr = $4000
+
+        place $88,addr
         lda #$cd
-        adc $4000
+        adc addr
         bcc error
         sta $02                 ; Expect $55
 
 ;;; ADC absolute,X
-        ldy #$73
-        sty $4096
-        ldx #$96
+        absx = $96
+
+        place $73,addr+absx
+        ldx #absx
         lda #$d7
-        adc $4000,X
+        adc addr,X
         bcc error
         sta $03                 ; Expect $4b
 
 ;;; ADC absolute,Y
-        ldx #$3b
-        stx $4040
-        ldy #$40
+        absy = $40
+
+        place $3b,addr+absy
+        ldy #absy
         lda #$44
-        adc $4000,Y
+        adc addr,Y
         bcs error
         sta $04                 ; Expect $80
 
 ;;; ADC zero page
-        ldy #$b9
-        sty $88
+        zp = $88
+
+        place $b9,zp
         lda #$11
-        adc $88
+        adc zp
         bcs error
         sta $05                 ; Expect $ca
 
 ;;; ADC zero page,X
-        ldx #$18
+        zpx = $28
+
+        ldx #zpx
         lda #$75
-        adc $70,X
+        adc zp-zpx,X
         bcc error
         sta $06                 ; Expect $2e
 
 ;;; ADC indexed indirect
-        lda #$00
-        sta $98
-        lda #$40
-        sta $99
-        ldx #$08
+        iiaddr = $4000
+        iiloc = $98
+        xii = $08
+
+        staddr iiaddr, iiloc
+        ldx #xii
         lda #$24
-        adc ($90,X)
+        adc (iiloc-xii,X)
         bcs error
         sta $07                 ; Expect $ad
 
 ;;; ADC indirect indexed
-        ldy #$96
+        yii = $96
+
+        ldy #yii
         lda #$70
-        adc ($98),Y
+        adc (iiloc),Y
         bcs error
         sta $08                 ; Expect $e3
 

@@ -127,6 +127,22 @@ func CMP(p *Processor, addr int) {
 	p.f.C = diff >= 0
 }
 
+func CPX(p *Processor, addr int) {
+	mem := p.Memory.Read(addr)
+	diff := int(p.X) - int(mem)
+	p.f.N = diff < 0
+	p.f.Z = diff == 0
+	p.f.C = diff >= 0
+}
+
+func CPY(p *Processor, addr int) {
+	mem := p.Memory.Read(addr)
+	diff := int(p.Y) - int(mem)
+	p.f.N = diff < 0
+	p.f.Z = diff == 0
+	p.f.C = diff >= 0
+}
+
 func DEC(p *Processor, addr int) {
 	n := p.Memory.Read(addr)
 	n--

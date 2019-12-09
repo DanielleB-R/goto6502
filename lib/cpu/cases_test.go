@@ -186,12 +186,13 @@ var TestPrograms = []Program{
 	Program{
 		MachineCodeFile: "../../asm/test-stack.bin",
 		Description:     "Stack instructions",
-		FinalState:      Registers{0x93, 0xce, 0x93},
+		FinalState:      Registers{0x81, 0xce, 0x93},
 		FinalMemory: []MemoryMatch{
 			{0x00, []byte{0x20}, "Set stack pointer"},
 			{0x011f, []byte{0x8f, 0xec}, "Push accumulator to stack"},
 			{0x01, []byte{0xa6, 0x0e}, "Pull accumulator from stack"},
 			{0x03, []byte{0xce, 0x93}, "TXA and TYA"},
+			{0x05, []byte{0x81}, "Push flags to stack"},
 		},
 	},
 

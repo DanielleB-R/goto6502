@@ -29,3 +29,10 @@
         ldy #$93
         tya
         sta $04                 ; expect $93
+
+;;; pushing flags
+        sec
+        lda #$88
+        php
+        pla
+        sta $05                 ; expect $81

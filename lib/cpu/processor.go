@@ -32,6 +32,16 @@ func (p *Processor) branch(addr int) {
 	p.PC += int(offset)
 }
 
+func (p *Processor) pull() byte {
+	p.S++
+	return p.Memory.Read(p.stackAddr())
+}
+
+func (p *Processor) push(value byte) {
+	p.Memory.Write(p.stackAddr(), value)
+	p.S--
+}
+
 func (p *Processor) stackAddr() int {
 	return 0x0100 | int(p.S)
 }
@@ -242,15 +252,21 @@ func ORA(p *Processor, addr int) {
 }
 
 func PHA(p *Processor, addr int) {
-	p.Memory.Write(p.stackAddr(), p.A)
-	p.S--
+	p.push(p.A)
+}
+
+func PHP(p *Processor, addr int) {
+	p.push(p.f.GetByte())
 }
 
 func PLA(p *Processor, addr int) {
-	p.S++
-	p.A = p.Memory.Read(p.stackAddr())
+	p.A = p.pull()
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
+}
+
+func PLP(p *Processor, addr int) {
+	p.f.SetByte(p.pull())
 }
 
 func ROL(p *Processor, addr int) {

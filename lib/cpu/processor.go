@@ -56,11 +56,20 @@ func AND(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
-func ASL(p *Processor, addr int) {
+func ASLA(p *Processor, addr int) {
 	p.f.C = p.A&0x80 != 0
 	p.A <<= 1
 	p.f.SetN(p.A)
 	p.f.SetN(p.A)
+}
+
+func ASL(p *Processor, addr int) {
+	subject := p.Memory.Read(addr)
+	p.f.C = subject&0x80 != 0
+	subject <<= 1
+	p.Memory.Write(addr, subject)
+	p.f.SetN(subject)
+	p.f.SetN(subject)
 }
 
 func BCC(p *Processor, addr int) {

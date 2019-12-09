@@ -153,16 +153,20 @@ func NoOperandInstruction(opcode byte, operation OperationFn) Instruction {
 var Ops6502 = map[byte]Instruction{
 	0x01: Instruction{0x01, IndexedIndirectAddress, ORA, 2},
 	0x05: ZeroPageInstruction(0x05, ORA),
+	0x06: ZeroPageInstruction(0x06, ASL),
 	0x09: ImmediateInstruction(0x09, ORA),
-	0x0a: NoOperandInstruction(0x0a, ASL),
+	0x0a: NoOperandInstruction(0x0a, ASLA),
 	0x0d: AbsoluteInstruction(0x0d, ORA),
+	0x0e: AbsoluteInstruction(0x0e, ASL),
 
 	0x10: ImmediateInstruction(0x10, BPL),
 	0x11: Instruction{0x11, IndirectIndexedAddress, ORA, 2},
 	0x15: ZeroPageXInstruction(0x15, ORA),
+	0x16: ZeroPageXInstruction(0x16, ASL),
 	0x18: NoOperandInstruction(0x18, CLC),
 	0x19: AbsoluteYInstruction(0x19, ORA),
 	0x1d: AbsoluteXInstruction(0x1d, ORA),
+	0x1e: AbsoluteXInstruction(0x1e, ASL),
 
 	0x21: Instruction{0x21, IndexedIndirectAddress, AND, 2},
 	0x25: ZeroPageInstruction(0x25, AND),

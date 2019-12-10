@@ -176,7 +176,7 @@ var Ops6502 = map[byte]Instruction{
 	// 0x24 BIT $NN
 	0x25: ZeroPageInstruction(0x25, AND),
 	// 0x26 ROL $NN
-	// 0x28 PLP
+	0x28: NoOperandInstruction(0x28, PLP),
 	0x29: ImmediateInstruction(0x29, AND),
 	0x2a: NoOperandInstruction(0x2a, ROL),
 	// 0x2c BIT $NNNN

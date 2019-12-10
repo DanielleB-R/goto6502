@@ -36,3 +36,15 @@
         php
         pla
         sta $05                 ; expect $81
+
+;;; pulling flags
+        sec
+        lda #$c2
+        pha
+        plp
+        bcs end
+        bne end
+        bpl end
+        bvc end
+        sta $06                 ; expect $c2
+end:    brk

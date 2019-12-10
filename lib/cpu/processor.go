@@ -214,6 +214,13 @@ func JMP(p *Processor, addr int) {
 	p.jumped = true
 }
 
+func JSR(p *Processor, addr int) {
+	ret := p.PC + 2
+	p.push(byte(ret >> 8))
+	p.push(byte(ret & 0xff))
+	JMP(p, addr)
+}
+
 // LDA loads a byte into the A register
 func LDA(p *Processor, addr int) {
 	p.A = p.Memory.Read(addr)
@@ -293,20 +300,26 @@ func ROR(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
-func SEC(p *Processor, address int) {
+func RTS(p *Processor, addr int) {
+	lob := p.pull()
+	hob := p.pull()
+	p.PC = (int(hob) << 8) | int(lob)
+}
+
+func SEC(p *Processor, addr int) {
 	p.f.C = true
 }
 
-func STA(p *Processor, address int) {
-	p.Memory.Write(address, p.A)
+func STA(p *Processor, addr int) {
+	p.Memory.Write(addr, p.A)
 }
 
-func STX(p *Processor, address int) {
-	p.Memory.Write(address, p.X)
+func STX(p *Processor, addr int) {
+	p.Memory.Write(addr, p.X)
 }
 
-func STY(p *Processor, address int) {
-	p.Memory.Write(address, p.Y)
+func STY(p *Processor, addr int) {
+	p.Memory.Write(addr, p.Y)
 }
 
 func TAX(p *Processor, addr int) {

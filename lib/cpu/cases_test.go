@@ -255,4 +255,14 @@ var TestPrograms = []Program{
 			{0x09, []byte{0x9e, 0xe9}, "CMX/CPY zero page"},
 		},
 	},
+
+	Program{
+		MachineCodeFile: "../../asm/test-subroutine.bin",
+		Description:     "JSR and RTS instructions",
+		FinalState:      Registers{0xab, 0xff, 0x00},
+		FinalMemory: []MemoryMatch{
+			{0x00, []byte{0x12, 0x34, 0x45}, "Visited subroutine"},
+			{0x03, []byte{0xab}, "Returned from subroutine"},
+		},
+	},
 }

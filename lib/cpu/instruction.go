@@ -171,7 +171,7 @@ var Ops6502 = map[byte]Instruction{
 	0x1d: AbsoluteXInstruction(0x1d, ORA),
 	0x1e: AbsoluteXInstruction(0x1e, ASL),
 
-	// 0x20 JSR $NNNN
+	0x20: AbsoluteInstruction(0x20, JSR),
 	0x21: Instruction{0x21, IndexedIndirectAddress, AND, 2},
 	// 0x24 BIT $NN
 	0x25: ZeroPageInstruction(0x25, AND),
@@ -212,7 +212,7 @@ var Ops6502 = map[byte]Instruction{
 	0x5d: AbsoluteXInstruction(0x5d, EOR),
 	// 0x5e LSR $NNNN,X
 
-	// 0x60 RTS
+	0x60: NoOperandInstruction(0x60, RTS),
 	0x61: Instruction{0x61, IndexedIndirectAddress, ADC, 2},
 	0x65: ZeroPageInstruction(0x65, ADC),
 	// 0x66 ROR $NN

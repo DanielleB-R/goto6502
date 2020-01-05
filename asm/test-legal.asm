@@ -23,3 +23,11 @@
         NOP
         ROL $52,X
         NOP
+        ROR $2000
+        NOP
+        ROR $4444,X
+        NOP
+        ROR $52
+        NOP
+        ROR $52,X
+        NOP

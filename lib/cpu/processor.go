@@ -251,9 +251,18 @@ func LDY(p *Processor, addr int) {
 }
 
 func LSR(p *Processor, addr int) {
+	subject := p.Memory.Read(addr)
+	p.f.C = subject&0x01 != 0
+	subject >>= 1
+	p.Memory.Write(addr, subject)
+	p.f.SetZ(subject)
+	p.f.SetN(subject)
+}
+
+func LSRA(p *Processor, addr int) {
 	p.f.C = p.A&0x01 != 0
 	p.A >>= 1
-	p.f.SetN(p.A)
+	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
 }
 

@@ -195,22 +195,23 @@ var Ops6502 = map[byte]Instruction{
 	// 0x40 RTI
 	0x41: Instruction{0x41, IndexedIndirectAddress, EOR, 2},
 	0x45: ZeroPageInstruction(0x45, EOR),
-	// 0x46 LSR $NN
+	0x46: ZeroPageInstruction(0x46, LSR),
 	0x48: NoOperandInstruction(0x48, PHA),
 	0x49: ImmediateInstruction(0x49, EOR),
-	0x4a: NoOperandInstruction(0x4a, LSR),
+	0x4a: NoOperandInstruction(0x4a, LSRA),
 	0x4c: AbsoluteInstruction(0x4c, JMP),
 	0x4d: AbsoluteInstruction(0x4d, EOR),
-	// 0x4e LSR $NNNN
+	0x4e: AbsoluteInstruction(0x4e, LSR),
 
+	// complete!
 	0x50: ImmediateInstruction(0x50, BVC),
 	0x51: Instruction{0x51, IndirectIndexedAddress, EOR, 2},
 	0x55: ZeroPageXInstruction(0x55, EOR),
-	// 0x56 LSR $NN,X
+	0x56: ZeroPageXInstruction(0x56, LSR),
 	0x58: NoOperandInstruction(0x58, CLI),
 	0x59: AbsoluteYInstruction(0x59, EOR),
 	0x5d: AbsoluteXInstruction(0x5d, EOR),
-	// 0x5e LSR $NNNN,X
+	0x5e: AbsoluteXInstruction(0x5e, LSR),
 
 	0x60: NoOperandInstruction(0x60, RTS),
 	0x61: Instruction{0x61, IndexedIndirectAddress, ADC, 2},
@@ -294,6 +295,7 @@ var Ops6502 = map[byte]Instruction{
 	0xcd: AbsoluteInstruction(0xcd, CMP),
 	0xce: AbsoluteInstruction(0xce, DEC),
 
+	// complete!
 	0xd0: ImmediateInstruction(0xd0, BNE),
 	0xd1: Instruction{0xd1, IndirectIndexedAddress, CMP, 2},
 	0xd5: ZeroPageXInstruction(0xd5, CMP),

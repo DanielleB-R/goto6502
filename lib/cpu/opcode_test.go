@@ -47,5 +47,46 @@ func TestDisableDecimal(t *testing.T) {
 	require.NoError(t, cpu.Emulate())
 
 	require.False(t, cpu.f.D)
+}
 
+func TestRightShiftAbsolute(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x4e, 0x22, 0x22})
+	cpu.Memory.Write(0x2222, 0x53)
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x29), cpu.Memory.Read(0x2222))
+	require.True(t, cpu.f.C)
+}
+
+func TestRightShiftAbsoluteX(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x5e, 0x22, 0x22})
+	cpu.Memory.Write(0x2224, 0x53)
+	cpu.X = 0x02
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x29), cpu.Memory.Read(0x2224))
+	require.True(t, cpu.f.C)
+}
+
+func TestRightShiftZeroPage(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x46, 0x22})
+	cpu.Memory.Write(0x22, 0x53)
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x29), cpu.Memory.Read(0x22))
+	require.True(t, cpu.f.C)
+}
+
+func TestRightShiftZeroPageX(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x56, 0x22})
+	cpu.Memory.Write(0x28, 0x53)
+	cpu.X = 0x06
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x29), cpu.Memory.Read(0x28))
+	require.True(t, cpu.f.C)
 }

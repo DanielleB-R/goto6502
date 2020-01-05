@@ -194,7 +194,8 @@ var Ops6502 = map[byte]Instruction{
 	0x3d: AbsoluteXInstruction(0x3d, AND),
 	0x3e: AbsoluteXInstruction(0x3e, ROL),
 
-	// 0x40 RTI
+	// complete!
+	0x40: NoOperandInstruction(0x40, RTI),
 	0x41: Instruction{0x41, IndexedIndirectAddress, EOR, 2},
 	0x45: ZeroPageInstruction(0x45, EOR),
 	0x46: ZeroPageInstruction(0x46, LSR),

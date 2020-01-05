@@ -206,3 +206,21 @@ func TestBitZeroPage(t *testing.T) {
 	require.False(t, cpu.f.N)
 	require.False(t, cpu.f.Z)
 }
+
+func TestRTI(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x40})
+	cpu.push(0x38)
+	cpu.push(0x84)
+	cpu.push(0x81)
+	cpu.f.Z = true
+	cpu.f.V = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, 0x3884, cpu.PC)
+
+	require.True(t, cpu.f.N)
+	require.True(t, cpu.f.C)
+	require.False(t, cpu.f.Z)
+	require.False(t, cpu.f.V)
+}

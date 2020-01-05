@@ -356,6 +356,12 @@ func RORA(p *Processor, addr int) {
 	p.f.SetN(p.A)
 }
 
+func RTI(p *Processor, addr int) {
+	p.f.SetByte(p.pull())
+	p.jumped = true
+	RTS(p, addr)
+}
+
 func RTS(p *Processor, addr int) {
 	lob := p.pull()
 	hob := p.pull()

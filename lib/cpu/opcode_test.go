@@ -32,3 +32,20 @@ func TestEnableInterrupts(t *testing.T) {
 	require.False(t, cpu.f.I)
 
 }
+
+func TestEnableDecimal(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xf8})
+	require.NoError(t, cpu.Emulate())
+
+	require.True(t, cpu.f.D)
+}
+
+func TestDisableDecimal(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xd8})
+	cpu.f.D = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.False(t, cpu.f.D)
+
+}

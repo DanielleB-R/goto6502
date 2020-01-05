@@ -134,6 +134,10 @@ func CLC(p *Processor, addr int) {
 	p.f.C = false
 }
 
+func CLD(p *Processor, addr int) {
+	p.f.D = false
+}
+
 func CLI(p *Processor, addr int) {
 	p.f.I = false
 }
@@ -312,6 +316,10 @@ func RTS(p *Processor, addr int) {
 
 func SEC(p *Processor, addr int) {
 	p.f.C = true
+}
+
+func SED(p *Processor, addr int) {
+	p.f.D = true
 }
 
 func SEI(p *Processor, addr int) {

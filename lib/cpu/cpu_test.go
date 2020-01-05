@@ -58,6 +58,21 @@ func (p *Program) checkProgram(t *testing.T) {
 	matchRegisters(t, &p.FinalState, &cpu)
 }
 
+func TestLegalOpcodes(t *testing.T) {
+	infile, err := os.Open("../../asm/test-legal.bin")
+	require.NoError(t, err)
+	defer infile.Close()
+
+	cpu := NewProcessor(0x1000, infile)
+
+	for cpu.Memory.Read(cpu.PC) != 0 {
+		err := cpu.Emulate()
+		require.NoError(t, err)
+		require.Equal(t, byte(0xea), cpu.Memory.Read(cpu.PC))
+		cpu.PC++
+	}
+}
+
 func TestRunPrograms(t *testing.T) {
 	for _, program := range TestPrograms {
 		t.Run(program.Description, func(tt *testing.T) {

@@ -1,6 +1,9 @@
 package cpu
 
+// Flags represents the state of the CPU status flags
 type Flags struct {
+	// This flag is for interrupt disable
+	I bool
 	Z bool
 	N bool
 	C bool
@@ -22,6 +25,7 @@ func (f *Flags) SetV(n, oldN byte) {
 const (
 	FLAG_C byte = 0x01
 	FLAG_Z byte = 0x02
+	FLAG_I byte = 0x04
 	FLAG_V byte = 0x40
 	FLAG_N byte = 0x80
 )
@@ -40,6 +44,9 @@ func (f *Flags) GetByte() byte {
 	if f.N {
 		flagByte |= FLAG_N
 	}
+	if f.I {
+		flagByte |= FLAG_I
+	}
 	return flagByte
 }
 
@@ -48,4 +55,5 @@ func (f *Flags) SetByte(value byte) {
 	f.C = value&FLAG_C != 0
 	f.V = value&FLAG_V != 0
 	f.N = value&FLAG_N != 0
+	f.I = value&FLAG_I != 0
 }

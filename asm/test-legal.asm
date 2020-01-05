@@ -1,0 +1,4 @@
+        SEI
+        NOP
+        CLI
+        NOP

@@ -36,3 +36,20 @@
         NOP
         BIT $84
         NOP
+
+        SBC #$02
+        NOP
+        SBC $2000
+        NOP
+        SBC $4444,X
+        NOP
+        SBC $8888,Y
+        NOP
+        SBC $52
+        NOP
+        SBC $52,X
+        NOP
+        SBC ($38,X)
+        NOP
+        SBC ($89),Y
+        NOP

@@ -311,23 +311,23 @@ var Ops6502 = map[byte]Instruction{
 	0xde: AbsoluteXInstruction(0xde, DEC),
 
 	0xe0: ImmediateInstruction(0xe0, CPX),
-	// 0xe1 SBC ($NN,X)
+	0xe1: Instruction{0xe1, IndexedIndirectAddress, SBC, 2},
 	0xe4: ZeroPageInstruction(0xe4, CPX),
-	// 0xe5 SBC $NN
+	0xe5: ZeroPageInstruction(0xe5, SBC),
 	0xe6: ZeroPageInstruction(0xe6, INC),
 	0xe8: NoOperandInstruction(0xe8, INX),
-	// 0xe9 SBC #$NN
+	0xe9: ImmediateInstruction(0xe9, SBC),
 	0xea: NoOperandInstruction(0xea, NOP),
 	0xec: AbsoluteInstruction(0xec, CPX),
-	// 0xed SBC $NNNN
+	0xed: AbsoluteInstruction(0xed, SBC),
 	0xee: AbsoluteInstruction(0xee, INC),
 
 	0xf0: ImmediateInstruction(0xf0, BEQ),
-	// 0xf1 SBC ($NN),Y
-	// 0xf5 SBC $NN,X
+	0xf1: Instruction{0xf1, IndirectIndexedAddress, SBC, 2},
+	0xf5: ZeroPageXInstruction(0xf5, SBC),
 	0xf6: ZeroPageXInstruction(0xf6, INC),
 	0xf8: NoOperandInstruction(0xf8, SED),
-	// 0xf9 SBC $NNNN,Y
-	// 0xfd SBC $NNNN,X
+	0xf9: AbsoluteYInstruction(0xf9, SBC),
+	0xfd: AbsoluteXInstruction(0xfd, SBC),
 	0xfe: AbsoluteXInstruction(0xfe, INC),
 }

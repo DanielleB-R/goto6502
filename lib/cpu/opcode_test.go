@@ -224,3 +224,139 @@ func TestRTI(t *testing.T) {
 	require.False(t, cpu.f.Z)
 	require.False(t, cpu.f.V)
 }
+
+func TestSubtractImmediate(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xe9, 0x34})
+	cpu.A = 0x66
+	cpu.f.C = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x32), cpu.A)
+
+	require.False(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+	require.True(t, cpu.f.C)
+	require.False(t, cpu.f.V)
+}
+
+func TestSubtractAbsolute(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xed, 0x22, 0x22})
+	cpu.A = 0x66
+	cpu.Memory.Write(0x2222, 0x66)
+	cpu.f.C = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x00), cpu.A)
+
+	require.False(t, cpu.f.N)
+	require.True(t, cpu.f.Z)
+	require.True(t, cpu.f.C)
+	require.False(t, cpu.f.V)
+}
+
+func TestSubtractAbsoluteX(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xfd, 0x22, 0x22})
+	cpu.A = 0x66
+	cpu.Memory.Write(0x2228, 0x88)
+	cpu.f.C = true
+	cpu.X = 0x06
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xde), cpu.A)
+
+	require.True(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+	require.False(t, cpu.f.C)
+	require.True(t, cpu.f.V)
+}
+
+func TestSubtractAbsoluteY(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xf9, 0x22, 0x22})
+	cpu.A = 0x66
+	cpu.Memory.Write(0x2228, 0x88)
+	cpu.f.C = false
+	cpu.Y = 0x06
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xdd), cpu.A)
+
+	require.True(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+	require.False(t, cpu.f.C)
+	require.True(t, cpu.f.V)
+}
+
+func TestSubtractZeroPage(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xe5, 0x22})
+	cpu.A = 0x66
+	cpu.Memory.Write(0x22, 0xff)
+	cpu.f.C = false
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x66), cpu.A)
+
+	require.False(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+	require.False(t, cpu.f.C)
+	require.False(t, cpu.f.V)
+}
+
+func TestSubtractZeroPageX(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xf5, 0x22})
+	cpu.A = 0xff
+	cpu.Memory.Write(0x28, 0xff)
+	cpu.f.C = true
+	cpu.X = 0x06
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0x00), cpu.A)
+
+	require.False(t, cpu.f.N)
+	require.True(t, cpu.f.Z)
+	require.True(t, cpu.f.C)
+	require.True(t, cpu.f.V)
+}
+
+func TestSubtractIndexedIndirect(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xe1, 0x38})
+	cpu.X = 0x02
+	cpu.Memory.Write(0x3a, 0x22)
+	cpu.Memory.Write(0x3b, 0x22)
+	cpu.A = 0xff
+	cpu.Memory.Write(0x2222, 0x00)
+	cpu.f.C = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xff), cpu.A)
+
+	require.True(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+	require.True(t, cpu.f.C)
+	require.False(t, cpu.f.V)
+}
+
+func TestSubtractIndirectIndexed(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0xf1, 0x3a})
+	cpu.Y = 0x02
+	cpu.Memory.Write(0x3a, 0x22)
+	cpu.Memory.Write(0x3b, 0x22)
+	cpu.A = 0xff
+	cpu.Memory.Write(0x2224, 0x0f)
+	cpu.f.C = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xf0), cpu.A)
+
+	require.True(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+	require.True(t, cpu.f.C)
+	require.False(t, cpu.f.V)
+}

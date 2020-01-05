@@ -368,6 +368,20 @@ func RTS(p *Processor, addr int) {
 	p.PC = (int(hob) << 8) | int(lob)
 }
 
+func SBC(p *Processor, addr int) {
+	oldA := p.A
+	var carry uint
+	if !p.f.C {
+		carry = 0x01
+	}
+	diff := uint(p.A) - uint(p.Memory.Read(addr)) - carry
+	p.A = byte(diff & 0xff)
+	p.f.C = diff <= 0xff
+	p.f.SetZ(p.A)
+	p.f.SetN(p.A)
+	p.f.SetV(p.A, oldA)
+}
+
 func SEC(p *Processor, addr int) {
 	p.f.C = true
 }

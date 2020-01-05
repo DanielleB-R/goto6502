@@ -182,3 +182,27 @@ func TestRotateRightZeroPageX(t *testing.T) {
 	require.Equal(t, byte(0xa9), cpu.Memory.Read(0x28))
 	require.False(t, cpu.f.C)
 }
+
+func TestBitAbsolute(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x2c, 0x22, 0x22})
+	cpu.Memory.Write(0x2222, 0x86)
+	cpu.A = 0x51
+
+	require.NoError(t, cpu.Emulate())
+
+	require.False(t, cpu.f.V)
+	require.True(t, cpu.f.N)
+	require.True(t, cpu.f.Z)
+}
+
+func TestBitZeroPage(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x24, 0x22})
+	cpu.Memory.Write(0x22, 0x56)
+	cpu.A = 0x51
+
+	require.NoError(t, cpu.Emulate())
+
+	require.True(t, cpu.f.V)
+	require.False(t, cpu.f.N)
+	require.False(t, cpu.f.Z)
+}

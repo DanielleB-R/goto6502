@@ -31,3 +31,8 @@
         NOP
         ROR $52,X
         NOP
+
+        BIT $2000
+        NOP
+        BIT $84
+        NOP

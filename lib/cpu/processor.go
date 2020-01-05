@@ -100,6 +100,15 @@ func BEQ(p *Processor, addr int) {
 	}
 }
 
+func BIT(p *Processor, addr int) {
+	operand := p.Memory.Read(addr)
+	anded := p.A & operand
+
+	p.f.Z = anded == 0
+	p.f.V = operand&0x40 != 0
+	p.f.N = operand&0x80 != 0
+}
+
 func BMI(p *Processor, addr int) {
 	if p.f.N {
 		p.branch(addr)

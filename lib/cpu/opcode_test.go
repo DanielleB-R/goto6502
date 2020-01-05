@@ -90,3 +90,49 @@ func TestRightShiftZeroPageX(t *testing.T) {
 	require.Equal(t, byte(0x29), cpu.Memory.Read(0x28))
 	require.True(t, cpu.f.C)
 }
+
+func TestRotateLeftAbsolute(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x2e, 0x22, 0x22})
+	cpu.Memory.Write(0x2222, 0x52)
+	cpu.f.C = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xa5), cpu.Memory.Read(0x2222))
+	require.False(t, cpu.f.C)
+}
+
+func TestRotateLeftAbsoluteX(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x3e, 0x22, 0x22})
+	cpu.Memory.Write(0x2233, 0x52)
+	cpu.f.C = true
+	cpu.X = 0x11
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xa5), cpu.Memory.Read(0x2233))
+	require.False(t, cpu.f.C)
+}
+
+func TestRotateLeftZeroPage(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x26, 0x22})
+	cpu.Memory.Write(0x22, 0x52)
+	cpu.f.C = true
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xa5), cpu.Memory.Read(0x22))
+	require.False(t, cpu.f.C)
+}
+
+func TestRotateLeftZeroPageX(t *testing.T) {
+	cpu := makeOpcodeCpu([]byte{0x36, 0x22, 0x22})
+	cpu.Memory.Write(0x33, 0x52)
+	cpu.f.C = true
+	cpu.X = 0x11
+
+	require.NoError(t, cpu.Emulate())
+
+	require.Equal(t, byte(0xa5), cpu.Memory.Read(0x33))
+	require.False(t, cpu.f.C)
+}

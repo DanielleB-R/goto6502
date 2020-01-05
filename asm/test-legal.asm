@@ -14,3 +14,12 @@
         NOP
         LSR $52,X
         NOP
+
+        ROL $2000
+        NOP
+        ROL $4444,X
+        NOP
+        ROL $52
+        NOP
+        ROL $52,X
+        NOP

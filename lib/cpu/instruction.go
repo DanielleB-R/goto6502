@@ -152,6 +152,7 @@ func NoOperandInstruction(opcode byte, operation OperationFn) Instruction {
 // Ops6502 is a 6502 opcode map
 var Ops6502 = map[byte]Instruction{
 	// complete! (except BRK)
+	0x00: NoOperandInstruction(0x00, BRK),
 	0x01: Instruction{0x01, IndexedIndirectAddress, ORA, 2},
 	0x05: ZeroPageInstruction(0x05, ORA),
 	0x06: ZeroPageInstruction(0x06, ASL),

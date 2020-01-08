@@ -127,6 +127,15 @@ func BPL(p *Processor, addr int) {
 	}
 }
 
+func BRK(p *Processor, addr int) {
+	ret := p.PC + 2
+	p.push(byte(ret >> 8))
+	p.push(byte(ret & 0xff))
+	PHP(p, 0)
+	p.f.I = true
+	JMP(p, p.Memory.ReadWord(0xFFFE))
+}
+
 func BVC(p *Processor, addr int) {
 	if !p.f.V {
 		p.branch(addr)
@@ -289,7 +298,8 @@ func PHA(p *Processor, addr int) {
 }
 
 func PHP(p *Processor, addr int) {
-	p.push(p.f.GetByte())
+	// PHP always sets bits 4 and 5
+	p.push(p.f.GetByte() | 0x30)
 }
 
 func PLA(p *Processor, addr int) {

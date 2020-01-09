@@ -52,12 +52,13 @@ func ADC(p *Processor, addr int) {
 	if p.f.C {
 		carry = 0x01
 	}
+	operand := p.Memory.Read(addr)
 	sum := int(p.A) + int(p.Memory.Read(addr)) + carry
 	p.A = byte(sum & 0xff)
 	p.f.C = sum > 0xff
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
-	p.f.SetV(p.A, oldA)
+	p.f.V = (oldA^operand)&0x80 == 0 && (oldA^p.A)&0x80 != 0
 }
 
 func AND(p *Processor, addr int) {
@@ -70,7 +71,7 @@ func ASLA(p *Processor, addr int) {
 	p.f.C = p.A&0x80 != 0
 	p.A <<= 1
 	p.f.SetN(p.A)
-	p.f.SetN(p.A)
+	p.f.SetZ(p.A)
 }
 
 func ASL(p *Processor, addr int) {
@@ -79,7 +80,7 @@ func ASL(p *Processor, addr int) {
 	subject <<= 1
 	p.Memory.Write(addr, subject)
 	p.f.SetN(subject)
-	p.f.SetN(subject)
+	p.f.SetZ(subject)
 }
 
 func BCC(p *Processor, addr int) {
@@ -384,12 +385,13 @@ func SBC(p *Processor, addr int) {
 	if !p.f.C {
 		carry = 0x01
 	}
+	operand := p.Memory.Read(addr)
 	diff := uint(p.A) - uint(p.Memory.Read(addr)) - carry
 	p.A = byte(diff & 0xff)
 	p.f.C = diff <= 0xff
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
-	p.f.SetV(p.A, oldA)
+	p.f.V = (oldA^operand)&0x80 != 0 && (oldA^p.A)&0x80 != 0
 }
 
 func SEC(p *Processor, addr int) {

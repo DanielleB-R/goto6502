@@ -19,10 +19,6 @@ func (f *Flags) SetN(n byte) {
 	f.N = n&0x80 != 0
 }
 
-func (f *Flags) SetV(n, oldN byte) {
-	f.V = n&0x80 != oldN&0x80
-}
-
 const (
 	FLAG_C byte = 0x01
 	FLAG_Z byte = 0x02

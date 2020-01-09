@@ -53,9 +53,32 @@ func ADC(p *Processor, addr int) {
 		carry = 0x01
 	}
 	operand := p.Memory.Read(addr)
-	sum := int(p.A) + int(p.Memory.Read(addr)) + carry
-	p.A = byte(sum & 0xff)
-	p.f.C = sum > 0xff
+	if p.f.D {
+		lna := p.A & 0x0f
+		lno := operand & 0x0f
+		lnr := lna + lno + byte(carry)
+		if lnr > 0x09 {
+			lnr -= 0x0a
+			carry = 0x01
+		} else {
+			carry = 0x00
+		}
+
+		hna := p.A >> 4
+		hno := operand >> 4
+		hnr := hna + hno + byte(carry)
+		if hnr > 0x09 {
+			hnr -= 0x0a
+			p.f.C = true
+		} else {
+			p.f.C = false
+		}
+		p.A = (hnr << 4) + lnr
+	} else {
+		sum := int(p.A) + int(p.Memory.Read(addr)) + carry
+		p.A = byte(sum & 0xff)
+		p.f.C = sum > 0xff
+	}
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
 	p.f.V = (oldA^operand)&0x80 == 0 && (oldA^p.A)&0x80 != 0
@@ -386,9 +409,13 @@ func SBC(p *Processor, addr int) {
 		carry = 0x01
 	}
 	operand := p.Memory.Read(addr)
-	diff := uint(p.A) - uint(p.Memory.Read(addr)) - carry
-	p.A = byte(diff & 0xff)
-	p.f.C = diff <= 0xff
+	if p.f.D {
+		panic("decimal subtract")
+	} else {
+		diff := uint(p.A) - uint(p.Memory.Read(addr)) - carry
+		p.A = byte(diff & 0xff)
+		p.f.C = diff <= 0xff
+	}
 	p.f.SetZ(p.A)
 	p.f.SetN(p.A)
 	p.f.V = (oldA^operand)&0x80 != 0 && (oldA^p.A)&0x80 != 0

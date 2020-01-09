@@ -192,7 +192,7 @@ var TestPrograms = []Program{
 			{0x011f, []byte{0x8f, 0xec}, "Push accumulator to stack"},
 			{0x01, []byte{0xa6, 0x0e}, "Pull accumulator from stack"},
 			{0x03, []byte{0xce, 0x93}, "TXA and TYA"},
-			{0x05, []byte{0x81}, "Push flags to stack"},
+			{0x05, []byte{0xb1}, "Push flags to stack"},
 			{0x06, []byte{0xc2}, "Pull flags from stack"},
 		},
 	},

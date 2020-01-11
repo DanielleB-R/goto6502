@@ -73,7 +73,7 @@ func ADC(p *Processor, addr int) {
 		} else {
 			p.f.C = false
 		}
-		p.A = (hnr << 4) + lnr
+		p.A = (hnr << 4) + (lnr & 0x0f)
 	} else {
 		sum := int(p.A) + int(p.Memory.Read(addr)) + carry
 		p.A = byte(sum & 0xff)
@@ -410,15 +410,34 @@ func SBC(p *Processor, addr int) {
 	}
 	operand := p.Memory.Read(addr)
 	if p.f.D {
-		panic("decimal subtract")
+		lna := p.A & 0x0f
+		lno := operand & 0x0f
+		lnr := lna - lno - byte(carry)
+		if lnr&0xff > 0x09 {
+			lnr -= 0x06
+			carry = 0x01
+		} else {
+			carry = 0x00
+		}
+
+		hna := p.A >> 4
+		hno := operand >> 4
+		hnr := hna - hno - byte(carry)
+		if hnr&0xff > 0x09 {
+			hnr -= 0x06
+			p.f.C = false
+		} else {
+			p.f.C = true
+		}
+		p.A = (hnr << 4) + (lnr & 0x0f)
 	} else {
 		diff := uint(p.A) - uint(p.Memory.Read(addr)) - carry
 		p.A = byte(diff & 0xff)
 		p.f.C = diff <= 0xff
+		p.f.SetZ(p.A)
+		p.f.SetN(p.A)
+		p.f.V = (oldA^operand)&0x80 != 0 && (oldA^p.A)&0x80 != 0
 	}
-	p.f.SetZ(p.A)
-	p.f.SetN(p.A)
-	p.f.V = (oldA^operand)&0x80 != 0 && (oldA^p.A)&0x80 != 0
 }
 
 func SEC(p *Processor, addr int) {

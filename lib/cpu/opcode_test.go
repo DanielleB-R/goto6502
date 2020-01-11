@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"testing"
 
+	"github.com/DanielleB-R/goto6502/lib/memory"
 	"github.com/stretchr/testify/require"
 )
 
@@ -359,4 +360,16 @@ func TestSubtractIndirectIndexed(t *testing.T) {
 	require.False(t, cpu.f.Z)
 	require.True(t, cpu.f.C)
 	require.False(t, cpu.f.V)
+}
+
+func TestDecimalSubtract(t *testing.T) {
+	cpu := &Processor{
+		A:      0x00,
+		f:      Flags{D: true},
+		Memory: &memory.RandomAccessMemory{Contents: []byte{0x00}},
+	}
+
+	SBC(cpu, 0x00)
+	require.Equal(t, byte(0x99), cpu.A)
+	require.False(t, cpu.f.C)
 }

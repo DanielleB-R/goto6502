@@ -321,7 +321,7 @@ func TestSubtractZeroPageX(t *testing.T) {
 	require.False(t, cpu.f.N)
 	require.True(t, cpu.f.Z)
 	require.True(t, cpu.f.C)
-	require.True(t, cpu.f.V)
+	require.False(t, cpu.f.V)
 }
 
 func TestSubtractIndexedIndirect(t *testing.T) {

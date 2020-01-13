@@ -501,7 +501,7 @@ func TYA(p *Processor, addr int) {
 func (p *Processor) Emulate() error {
 	opcode := p.Memory.Read(p.PC)
 
-	if ins, ok := Ops6502[opcode]; ok {
+	if ins := Ops6502Flat[opcode]; ins != nil {
 		ins.Execute(p)
 		if p.jumped {
 			p.jumped = false
